@@ -1,0 +1,9 @@
+C:\Users\Admin-PC\source\repos\Lockout 2 core\Lockout 2 core\bin\Debug\netstandard2.1\Lockout_2_core.deps.json
+C:\Users\Admin-PC\source\repos\Lockout 2 core\Lockout 2 core\bin\Debug\netstandard2.1\Lockout_2_core.dll
+C:\Users\Admin-PC\source\repos\Lockout 2 core\Lockout 2 core\bin\Debug\netstandard2.1\Lockout_2_core.pdb
+C:\Users\Admin-PC\source\repos\Lockout 2 core\Lockout 2 core\obj\x64\Debug\netstandard2.1\Lockout 2 core.csprojAssemblyReference.cache
+C:\Users\Admin-PC\source\repos\Lockout 2 core\Lockout 2 core\obj\x64\Debug\netstandard2.1\Lockout 2 core.AssemblyInfoInputs.cache
+C:\Users\Admin-PC\source\repos\Lockout 2 core\Lockout 2 core\obj\x64\Debug\netstandard2.1\Lockout 2 core.AssemblyInfo.cs
+C:\Users\Admin-PC\source\repos\Lockout 2 core\Lockout 2 core\obj\x64\Debug\netstandard2.1\Lockout 2 core.csproj.CoreCompileInputs.cache
+C:\Users\Admin-PC\source\repos\Lockout 2 core\Lockout 2 core\obj\x64\Debug\netstandard2.1\Lockout_2_core.dll
+C:\Users\Admin-PC\source\repos\Lockout 2 core\Lockout 2 core\obj\x64\Debug\netstandard2.1\Lockout_2_core.pdb

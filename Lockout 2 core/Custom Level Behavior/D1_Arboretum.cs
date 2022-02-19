@@ -91,6 +91,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
                 Delay = 0,
                 FogSetting = 120,
                 FogTransitionDuration = 30,
+                SoundID = 3429102651,
                 Trigger = eWardenObjectiveEventTrigger.OnStart
             });
             eventData.Add(new()
@@ -109,12 +110,57 @@ namespace Lockout_2_core.Custom_Level_Behavior
             WardenObjectiveManager.CheckAndExecuteEventsOnTrigger(eventData, eWardenObjectiveEventTrigger.OnStart, true);
         }
 
+        public void FogTransitionOnBossAlert()
+        {
+            var eventData = new Il2CppSystem.Collections.Generic.List<WardenObjectiveEventData>();
+            eventData.Add(new()
+            {
+                DimensionIndex = eDimensionIndex.Reality,
+                Type = eWardenObjectiveEventType.SetFogSetting,
+                Delay = 3,
+                FogSetting = 121,
+                FogTransitionDuration = 0.25f,
+                SoundID = 2591647810,
+                Trigger = eWardenObjectiveEventTrigger.OnStart
+            });
+            eventData.Add(new()
+            {
+                DimensionIndex = eDimensionIndex.Reality,
+                Type = eWardenObjectiveEventType.SetFogSetting,
+                Delay = 3.25f,
+                FogSetting = 122,
+                FogTransitionDuration = 1.5f,
+                SoundID = 4065651585,
+                Trigger = eWardenObjectiveEventTrigger.OnStart
+            });
+            eventData.Add(new()
+            {
+                DimensionIndex = eDimensionIndex.Reality,
+                Type = eWardenObjectiveEventType.SetFogSetting,
+                Delay = 5,
+                FogSetting = 123,
+                FogTransitionDuration = 5f,
+                Trigger = eWardenObjectiveEventTrigger.OnStart
+            });
+            eventData.Add(new()
+            {
+                DimensionIndex = eDimensionIndex.Reality,
+                Type = eWardenObjectiveEventType.SetFogSetting,
+                Delay = 10,
+                FogSetting = 124,
+                FogTransitionDuration = 3f,
+                Trigger = eWardenObjectiveEventTrigger.OnStart
+            });
+
+            WardenObjectiveManager.CheckAndExecuteEventsOnTrigger(eventData, eWardenObjectiveEventTrigger.OnStart, true);
+        }
         public void OnCleanup() 
         {
             L.Error("D1 - Arboretum cleanup!");
             m_IsSetup = false;
 
             if (m_GenCluster != null) GameObject.Destroy(m_GenCluster);
+            if (m_Boss != null) GameObject.Destroy(m_Boss.transform.parent.gameObject);
 
             Patch_GS_AfterLevel.OnLevelCleanup -= OnCleanup;
             Patch_LG_PopulateFunctionMarkersInZoneJob.OnTriggerFunctionBuilder -= OnTriggerFunctionBuilder;

@@ -127,15 +127,19 @@ namespace Lockout_2_core.Custom_Enemies
         public IEnumerator OpenShell(float timeDelay)
         {
             yield return new WaitForSeconds(timeDelay * 0.25f);
+            EnvironmentStateManager.AttemptLightningStrike(Vector3.down, new(0.5f, 0.1f, 0.025f, 1));
             ProjectileShotgun(25, ProjectileType.TargetingSmall, m_Owner.AI.Target.m_agent, m_Owner.EyePosition); TriggerSpitters();
 
              yield return new WaitForSeconds(timeDelay * 0.25f);
+            EnvironmentStateManager.AttemptLightningStrike(Vector3.down, new(0.5f, 0.1f, 0.025f, 1));
             ProjectileShotgun(25, ProjectileType.TargetingSmall, m_Owner.AI.Target.m_agent, m_Owner.EyePosition); TriggerSpitters();
 
             yield return new WaitForSeconds(timeDelay * 0.25f);
+            EnvironmentStateManager.AttemptLightningStrike(Vector3.down, new(0.5f, 0.1f, 0.025f, 1));
             ProjectileShotgun(25, ProjectileType.TargetingSmall, m_Owner.AI.Target.m_agent, m_Owner.EyePosition); TriggerSpitters();
 
             yield return new WaitForSeconds(timeDelay * 0.25f);
+            EnvironmentStateManager.AttemptLightningStrike(Vector3.down, new(0.5f, 0.1f, 0.025f, 1));
             ProjectileShotgun(25, ProjectileType.TargetingSmall, m_Owner.AI.Target.m_agent, m_Owner.EyePosition); TriggerSpitters();
             SyncTryOpen();
         }

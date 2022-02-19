@@ -22,7 +22,7 @@ namespace Lockout_2_core
 
 
             L.Debug($"Terminal {__instance.m_securityDoor.LinkedComputerTerminal.m_serialNumber} is a DisableAlarm terminal! Invoking :O");
-            OnSetupAlarmShutdownTerminal.Invoke(__instance.m_securityDoor.LinkedComputerTerminal, __instance.m_securityDoor.LinkedComputerTerminal.SpawnNode);
+            OnSetupAlarmShutdownTerminal?.Invoke(__instance.m_securityDoor.LinkedComputerTerminal, __instance.m_securityDoor.LinkedComputerTerminal.SpawnNode);
         }
 
         public static event Action<LG_ComputerTerminal, AIG_CourseNode> OnSetupAlarmShutdownTerminal;

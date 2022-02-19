@@ -19,6 +19,7 @@ namespace Lockout_2_core
 
             instance.Patch(gameType.GetMethod("AssignCourseNode"), null, new HarmonyMethod(patchType, "AssignCourseNode"));
             instance.Patch(gameType.GetMethod("TryPlaySound"), null, new HarmonyMethod(patchType, "TryPlaySound"));
+            instance.Patch(gameType.GetMethod("ManagerUpdate"), new HarmonyMethod(patchType, "ManagerUpdate"));
         }
         
         public static void AssignCourseNode(InfectionSpitter __instance)
@@ -34,16 +35,20 @@ namespace Lockout_2_core
             Vector3 firePos = __instance.transform.FindChild("fireAlign").position;
             List<PlayerAgent> agentTargets = new();
 
-            for (var i = 0; i <= 5; i++)
+            for (var i = 0; i <= 4; i++)
             {
                 agentTargets.Add(PlayerManager.PlayerAgentsInLevel[((int)__instance.Pointer + i) % PlayerManager.PlayerAgentsInLevel.Count]);
             }
 
-            ProjectileManager.WantToFireTargeting(ProjectileType.TargetingSmall, agentTargets[0], firePos, (__instance.transform.position - firePos).normalized + new Vector3((float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f));
-            ProjectileManager.WantToFireTargeting(ProjectileType.TargetingSmall, agentTargets[1], firePos, (__instance.transform.position - firePos).normalized + new Vector3((float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f));
-            ProjectileManager.WantToFireTargeting(ProjectileType.TargetingSmall, agentTargets[2], firePos, (__instance.transform.position - firePos).normalized + new Vector3((float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f));
-            ProjectileManager.WantToFireTargeting(ProjectileType.TargetingSmall, agentTargets[3], firePos, (__instance.transform.position - firePos).normalized + new Vector3((float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f));
-            ProjectileManager.WantToFireTargeting(ProjectileType.TargetingSmall, agentTargets[4], firePos, (__instance.transform.position - firePos).normalized + new Vector3((float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f));
+            ProjectileManager.WantToFireTargeting(ProjectileType.TargetingTiny, agentTargets[0], firePos, (__instance.transform.position - firePos).normalized + new Vector3((float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f));
+            ProjectileManager.WantToFireTargeting(ProjectileType.TargetingTiny, agentTargets[1], firePos, (__instance.transform.position - firePos).normalized + new Vector3((float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f));
+            ProjectileManager.WantToFireTargeting(ProjectileType.TargetingTiny, agentTargets[2], firePos, (__instance.transform.position - firePos).normalized + new Vector3((float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f));
+            ProjectileManager.WantToFireTargeting(ProjectileType.TargetingTiny, agentTargets[3], firePos, (__instance.transform.position - firePos).normalized + new Vector3((float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f, (float)new System.Random().NextDouble() * 0.3f));
+        }
+
+        public static void ManagerUpdate(InfectionSpitter __instance)
+        {
+            __instance.m_lightMeasure = 1;
         }
     }
 }

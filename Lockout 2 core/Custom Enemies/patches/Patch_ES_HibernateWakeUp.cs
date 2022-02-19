@@ -22,6 +22,7 @@ namespace Lockout_2_core
         {
             if (__instance.m_enemyAgent.EnemyData.persistentID != 47) return;
             Manager_CustomLevelBehavior.D1.m_Boss.SyncTryOpen();
+            Manager_CustomLevelBehavior.D1.FogTransitionOnBossAlert();
         }
     }
 }

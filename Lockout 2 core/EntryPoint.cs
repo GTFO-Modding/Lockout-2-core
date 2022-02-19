@@ -26,6 +26,7 @@ namespace Lockout_2_core
             m_Harmony = new Harmony("com.Mccad.Lockout2Core");
             AssetAPI.OnAssetBundlesLoaded += RegisterTypes;
             AssetAPI.OnAssetBundlesLoaded += AssetAPI_OnAssetBundlesLoaded;
+            AssetAPI.OnStartupAssetsLoaded += AssetAPI_OnStartupAssetsLoaded;
             RundownManager.add_OnExpeditionGameplayStarted((Action)DisableStamina.Setup);
 
             SetupConfig(base.Config);
@@ -86,6 +87,11 @@ namespace Lockout_2_core
             L.Debug("This rundown is dedicated to Dex. Hey there buddy, wherever you are, thanks for everything. Through good times and bad times you were always willing to lend me a hand, even when I was a hardass you would always work through my bullshit and help me get things done. I couldn't have done any of this without you. I'm gonna miss you, man. Wish you were here.");
         }
 
+        private void AssetAPI_OnStartupAssetsLoaded()
+        {
+            VaultSecurityDoorPlug.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/SecDoor_8x8/Content/8x8DoorPlug.prefab").TryCast<GameObject>());
+        }
+
         private static void AssetAPI_OnAssetBundlesLoaded()
         {
             PrefabAPI.CreateConsumable("assets/bundle/flashbang/content/consumable_flashbang.prefab");
@@ -116,6 +122,8 @@ namespace Lockout_2_core
             s_Captchas.Add("SE9swU LRogha".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/SE9swU LRogha.png").TryCast<Texture2D>());
             s_Captchas.Add("sU9Ar2 vm8TCR".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/sU9Ar2 vm8TCR.png").TryCast<Texture2D>());
             s_Captchas.Add("wBofIB iLdQLE".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/wBofIB iLdQLE.png").TryCast<Texture2D>());
+
+            VaultSecurityDoor.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/SecDoor_8x8/Content/SecurityDoor_8x8.prefab").TryCast<GameObject>());
         }
 
         private static void RegisterTypes()

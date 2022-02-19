@@ -52,6 +52,8 @@
     <Compile Include="Custom Level Behavior\patches\Patch_WardenObjectiveManager.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_WardenObjectiveManagerExecuteEvent.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_LG_ComputerTerminalCommandInterpreter.cs" />
+    <Compile Include="Custom Level Behavior\VaultSecurityDoorPlug.cs" />
+    <Compile Include="Custom Level Behavior\VaultSecurityDoor.cs" />
     <Compile Include="Custom Player Behavior\DisableStamina.cs" />
     <Compile Include="Custom Player Behavior\patches\Patch_PUI_LocalPlayerStatus.cs" />
     <Compile Include="Custom Rundown Page\patches\Patch_CM_ExpeditionIcon_New.cs" />

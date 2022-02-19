@@ -17,7 +17,7 @@ namespace Lockout_2_core
 
         public static void Exit(LG_TERM_ReactorError __instance)
         {
-            OnExitTerminalReactorError.Invoke(__instance.m_terminal);
+            OnExitTerminalReactorError?.Invoke(__instance.m_terminal);
         }
 
         public static event Action<LG_ComputerTerminal> OnExitTerminalReactorError;

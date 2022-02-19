@@ -25,7 +25,7 @@ namespace Lockout_2_core
 
             __instance.OnEndOfQueue = (Action)(() => {
                 L.Error("Kinda scary! Invoking OnEndOfQueue");
-                kindaScary[__instance.Pointer].Invoke();
+                kindaScary[__instance.Pointer]?.Invoke();
 
                 L.Error("Getting active warden objective");
                 var objective = WardenObjectiveManager.ActiveWardenObjective(__instance.m_terminal.SpawnNode.LayerType);
@@ -47,13 +47,13 @@ namespace Lockout_2_core
             if (cmd != TERM_Command.WardenObjectiveGatherCommand) return;
 
             L.Debug($"Terminal {__instance.m_terminal.m_serialNumber} gathered!");
-            OnGatherTerminal.Invoke(__instance.m_terminal, __instance.m_terminal.SpawnNode);
+            OnGatherTerminal?.Invoke(__instance.m_terminal, __instance.m_terminal.SpawnNode);
         }
 
         public static void TryGetCommand(LG_ComputerTerminalCommandInterpreter __instance, ref TERM_Command command, ref string param1, ref string param2, ref bool __result)
         {
             if (!__result) return;
-            RecieveCommand.Invoke(__instance.m_terminal, command, param1, param2);
+            RecieveCommand?.Invoke(__instance.m_terminal, command, param1, param2);
         }
 
         public static Dictionary<IntPtr, Il2CppSystem.Action> kindaScary = new();

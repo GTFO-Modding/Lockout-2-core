@@ -27,8 +27,11 @@ namespace Lockout_2_core
 
         public static void Fire(BulletWeapon __instance)                        //Grenade launcher: fire grenade projectile
         {
-            if (__instance.ArchetypeData.persistentID != 1011) return;
-            Manager_GrenadeLauncher.Fire(__instance);
+            if (__instance.ArchetypeData.persistentID == 1011)
+                Manager_GrenadeLauncher.Fire(__instance);
+
+            if (__instance.ArchetypeData.persistentID == 1004)
+                Manager_AntiMaterielRifle.Fire(__instance);
         }
 
         public static void OnWield(BulletWeapon __instance)                        //Smart Pistol: Assign manager to weapon

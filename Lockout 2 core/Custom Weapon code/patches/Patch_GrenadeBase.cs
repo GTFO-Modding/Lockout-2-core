@@ -13,6 +13,7 @@ namespace Lockout_2_core
 
             instance.Patch(gameType.GetMethod("Awake"), new HarmonyMethod(patchType, "Awake"));
             instance.Patch(gameType.GetMethod("Start"), null, new HarmonyMethod(patchType, "Start"));
+            instance.Patch(gameType.GetMethod("GrenadeDelay"), new HarmonyMethod(patchType, "GrenadeDelay"));
         }
 
         public static void Awake(GrenadeBase __instance)
@@ -21,11 +22,18 @@ namespace Lockout_2_core
 
             var comp_GrenadeProjectile = __instance.gameObject.AddComponent<Item_GrenadeLauncher_Projectile>();
             comp_GrenadeProjectile.enabled = true;
+            comp_GrenadeProjectile.m_grenadeBase = __instance;
         }
 
         public static void Start(GrenadeBase __instance)
         {
-            __instance.enabled = false;
+            __instance.CancelInvoke("GrenadeDelay");
+        }
+
+        public static bool GrenadeDelay(GrenadeBase __instance)
+        {
+            L.Debug("Is this shit even running?!???/");
+            return false;
         }
     }
 }

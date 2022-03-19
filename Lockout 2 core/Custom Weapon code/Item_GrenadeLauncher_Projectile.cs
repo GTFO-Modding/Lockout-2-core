@@ -53,7 +53,7 @@ namespace Lockout_2_core.Custom_Weapon_code
             }
             else if (Time.time > decayTime)
             {
-                ReplicationWrapper.Replicator.Despawn();
+                m_grenadeBase.ReplicationWrapper.Replicator.Despawn();
             }
         }
 
@@ -87,15 +87,15 @@ namespace Lockout_2_core.Custom_Weapon_code
         public void MakeNoise()
         {
             List<string> listenerAlloc = new List<string>();
-            IDamageable idamageable;
+            Dam_EnemyDamageLimb idamageable;
             EnemyAgent listener;
             var listeners = Physics.OverlapSphere(transform.position, 50f, LayerManager.MASK_ENEMY_DAMAGABLE);
             foreach (var collider in listeners)
             {
-                idamageable = collider.GetComponent<IDamageable>();
+                idamageable = collider.GetComponent<Dam_EnemyDamageLimb>();
                 if (idamageable == null) continue;
 
-                listener = idamageable.TryCast<Dam_EnemyDamageLimb>().GlueTargetEnemyAgent;
+                listener = idamageable.GlueTargetEnemyAgent;
                 if (listener == null || listenerAlloc.Contains(listener.gameObject.name)) continue;
                 listenerAlloc.Add(listener.gameObject.name);
 
@@ -145,6 +145,7 @@ namespace Lockout_2_core.Custom_Weapon_code
         public FeedbackPlayer m_vfxExplosion;
         public Rigidbody m_rigidbody;
         public CellSoundPlayer m_sound;
+        public GrenadeBase m_grenadeBase;
 
         public FX_PointLight m_PointLight;
         private static FX_Pool pool_Explosion = null;

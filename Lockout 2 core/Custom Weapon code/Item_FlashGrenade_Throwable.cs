@@ -114,7 +114,7 @@ namespace Lockout_2_core.Custom_Weapon_code
             stunTargetGotHit.Clear();
 
             List<IntPtr> stunTargetMemory = new();
-            IDamageable idamageable;
+            Dam_EnemyDamageLimb idamageable;
             EnemyAgent stunTarget;
             ImpactDirection impactDirection;
             stunTargetGotHit.Clear();
@@ -123,10 +123,10 @@ namespace Lockout_2_core.Custom_Weapon_code
             var stunTargets = Physics.OverlapSphere(transform.position, 10f, LayerManager.MASK_ENEMY_DAMAGABLE);
             foreach (var collider in stunTargets)
             {
-                idamageable = collider.GetComponent<IDamageable>();
+                idamageable = collider.GetComponent<Dam_EnemyDamageLimb>();
                 if (idamageable == null) continue;
 
-                stunTarget = idamageable.Cast<Dam_EnemyDamageLimb>().GlueTargetEnemyAgent;
+                stunTarget = idamageable.GlueTargetEnemyAgent;
                 if (stunTarget == null || stunTargetMemory.Contains(stunTarget.Pointer)) continue;
                 stunTargetMemory.Add(stunTarget.Pointer);
 
@@ -147,15 +147,15 @@ namespace Lockout_2_core.Custom_Weapon_code
         public void MakeNoise()
         {
             List<string> listenerAlloc = new List<string>();
-            IDamageable idamageable;
+            Dam_EnemyDamageLimb idamageable;
             EnemyAgent listener;
             var listeners = Physics.OverlapSphere(transform.position, 50f, LayerManager.MASK_ENEMY_DAMAGABLE);
             foreach (var collider in listeners)
             {
-                idamageable = collider.GetComponent<IDamageable>();
+                idamageable = collider.GetComponent<Dam_EnemyDamageLimb>();
                 if (idamageable == null) continue;
 
-                listener = idamageable.TryCast<Dam_EnemyDamageLimb>().GlueTargetEnemyAgent;
+                listener = idamageable.GlueTargetEnemyAgent;
                 if (listener == null || listenerAlloc.Contains(listener.gameObject.name)) continue;
                 listenerAlloc.Add(listener.gameObject.name);
 

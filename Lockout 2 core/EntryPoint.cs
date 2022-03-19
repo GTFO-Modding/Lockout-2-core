@@ -69,7 +69,7 @@ namespace Lockout_2_core
             Patch_LG_PowerGeneratorCluster.Inject(m_Harmony);
             Patch_LG_LevelExitGeo.Inject(m_Harmony);
             Patch_LG_PopulateFunctionMarkersInZoneJob.Inject(m_Harmony);
-            Manager_CustomLevelBehavior.setup();
+            Patch_LG_WardenObjective_Reactor.Inject(m_Harmony);
 
             //custom enemies
             Patch_ES_HibernateWakeup.Inject(m_Harmony);
@@ -107,10 +107,10 @@ namespace Lockout_2_core
             s_Captchas.Add("4NrcdM H7qxZZ".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/4NredM H7qxZZ.png").TryCast<Texture2D>());
             s_Captchas.Add("b6JvPI 8TS0i2".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/b6JvPI 8TS0i2.png").TryCast<Texture2D>());
             s_Captchas.Add("DE6hcC fFsImP".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/DE6hcC fFsImP.png").TryCast<Texture2D>());
-            s_Captchas.Add("DQeYQQ 9LXJSs".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/DQeYQQ 9LXJSs.png").TryCast<Texture2D>());
+            s_Captchas.Add("DQeYQQ 9LXJS5".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/DQeYQQ 9LXJSs.png").TryCast<Texture2D>());
             s_Captchas.Add("gKnLAB Wdca2d".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/gKnLAB Wdca2d.png").TryCast<Texture2D>());
             s_Captchas.Add("IWvUOZ QXCFqk".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/IWvUOZ QXCFqk.png").TryCast<Texture2D>());
-            s_Captchas.Add("jofF3W K34mjW".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/jofF3W K34mjW.png").TryCast<Texture2D>());
+            s_Captchas.Add("jofP3W K34mjW".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/jofF3W K34mjW.png").TryCast<Texture2D>());
             s_Captchas.Add("LorFfD LEdP9C".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/LorFfD LEdP9C.png").TryCast<Texture2D>());
             s_Captchas.Add("MIBnIC hCKt2Z".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/MIBnIC hCKt2Z.png").TryCast<Texture2D>());
             s_Captchas.Add("Nr9wbP Jc325C".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/Nr9wbP Jc325C.png").TryCast<Texture2D>());
@@ -124,6 +124,7 @@ namespace Lockout_2_core
             s_Captchas.Add("wBofIB iLdQLE".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/wBofIB iLdQLE.png").TryCast<Texture2D>());
 
             VaultSecurityDoor.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/SecDoor_8x8/Content/SecurityDoor_8x8.prefab").TryCast<GameObject>());
+            ReactorHSUPlatform.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/reactorCoolantPlatform/content/E1_CoolantHSU.prefab").TryCast<GameObject>());
         }
 
         private static void RegisterTypes()
@@ -133,6 +134,9 @@ namespace Lockout_2_core
             ClassInjector.RegisterTypeInIl2Cpp<Item_GrenadeLauncher_Projectile>();
             ClassInjector.RegisterTypeInIl2Cpp<Manager_WeaponAutoAim>();
             ClassInjector.RegisterTypeInIl2Cpp<Manager_VenusWeed_Rose>();
+            ClassInjector.RegisterTypeInIl2Cpp<E1_Old_Friends>();
+
+            Manager_CustomLevelBehavior.setup();
         }
 
         private static void SetupConfig(ConfigFile config)

@@ -15,7 +15,7 @@ namespace Lockout_2_core
 
         public static void OnStateChange(pHSUActivatorState oldState)
         {
-            if (RundownManager.ActiveExpedition.LevelLayoutData != 1001) return;
+            if (RundownManager.ActiveExpedition.LevelLayoutData != 1001 || RundownManager.ActiveExpedition.LevelLayoutData != 1006) return;
             if (oldState.status != eHSUActivatorStatus.ExtractionDone) return;
             oldState.status = eHSUActivatorStatus.WaitingForInsert;
         }

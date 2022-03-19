@@ -35,12 +35,8 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
         public void OnTriggerFunctionBuilder()
         {
+            if (m_GenCluster != null) return;
             L.Debug("OnTriggerFunctionBuilder! Preparing to setup generator cluster");
-            if (m_GenCluster != null)
-            {
-                L.Debug("Generator is already setup! :(");
-                return;
-            }
 
             m_GenCluster = GameObject.Instantiate(AssetAPI.GetLoadedAsset("Assets/Bundle/ServiceGenCluster/Content/Service_GenCluster.prefab").TryCast<GameObject>());
 

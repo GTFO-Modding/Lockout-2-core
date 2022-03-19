@@ -1,5 +1,6 @@
 ﻿using LevelGeneration;
 using System;
+using UnityEngine;
 
 namespace Lockout_2_core.Custom_Level_Behavior
 {
@@ -12,6 +13,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             B3 = new B3_Inquery();
             C1 = new C1_The_Crimson_King();
             D1 = new D1_Arboretum();
+            E1 = new GameObject().AddComponent<E1_Old_Friends>();
 
             LG_Factory.add_OnFactoryBuildStart((Action)SetupCustomLevel);
         }
@@ -26,6 +28,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
                 case 1003: B3.Setup(); break;
                 case 1004: C1.Setup(); break;
                 case 1005: D1.Setup(); break;
+                case 1006: E1.Setup(); break;
             }
             
         }
@@ -40,5 +43,6 @@ namespace Lockout_2_core.Custom_Level_Behavior
         public static B3_Inquery B3;
         public static C1_The_Crimson_King C1;
         public static D1_Arboretum D1;
+        public static E1_Old_Friends E1;
     }
 }

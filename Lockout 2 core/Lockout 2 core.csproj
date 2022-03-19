@@ -33,6 +33,7 @@
     <Compile Include="Custom Enemies\patches\Patch_InfectionSpitter.cs" />
     <Compile Include="Custom Enemies\patches\Patch_ES_HitReact.cs" />
     <Compile Include="Custom Enemies\patches\Patch_ES_HibernateWakeUp.cs" />
+    <Compile Include="Custom Level Behavior\E1_Old_Friends.cs" />
     <Compile Include="Custom Level Behavior\D1_Arboretum.cs" />
     <Compile Include="Custom Level Behavior\C1_The_Crimson_King.cs" />
     <Compile Include="Custom Level Behavior\B3_Inquery.cs" />
@@ -40,6 +41,7 @@
     <Compile Include="Custom Level Behavior\A1_Reawakening.cs" />
     <Compile Include="Custom Level Behavior\Manager_CustomLevelBehavior.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_LG_PopulateFunctionMarkersInZoneJob.cs" />
+    <Compile Include="Custom Level Behavior\patches\Patch_LG_WardenObjective_Reactor.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_LG_TERM_ReactorError.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_LG_LevelExitGeo.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_LG_ComputerTerminal.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="Custom Level Behavior\patches\Patch_WardenObjectiveManager.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_WardenObjectiveManagerExecuteEvent.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_LG_ComputerTerminalCommandInterpreter.cs" />
+    <Compile Include="Custom Level Behavior\ReactorHSUPlatform.cs" />
     <Compile Include="Custom Level Behavior\VaultSecurityDoorPlug.cs" />
     <Compile Include="Custom Level Behavior\VaultSecurityDoor.cs" />
     <Compile Include="Custom Player Behavior\DisableStamina.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="Custom Weapon code\patches\Patch_GlowStickInstance.cs" />
     <Compile Include="Custom Weapon code\patches\Patch_GrenadeBase.cs" />
     <Compile Include="Custom Weapon code\patches\Patch_FPSCamera.cs" />
+    <Compile Include="Custom Weapon code\Manager_AntiMaterielRifle.cs" />
     <Compile Include="CustomNetworking.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="L.cs" />

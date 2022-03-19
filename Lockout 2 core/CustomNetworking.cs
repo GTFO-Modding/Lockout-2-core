@@ -1,4 +1,5 @@
 ﻿using GTFO.API;
+using LevelGeneration;
 using Lockout_2_core.Custom_Level_Behavior;
 
 namespace Lockout_2_core
@@ -18,6 +19,12 @@ namespace Lockout_2_core
             NetworkAPI.RegisterEvent<byte>("C1DisableBSOD", C1_The_Crimson_King.RecieveDisableBSOD);
             NetworkAPI.RegisterEvent<C1_The_Crimson_King.pVerifyCaptcha>("C1VerifyCaptcha", C1_The_Crimson_King.SyncRecieveVerifyCaptcha);
             NetworkAPI.RegisterEvent<byte>("C1SyncSmallPickup", C1_The_Crimson_King.SyncOnCollectSmallPickup);
+
+            NetworkAPI.RegisterEvent<byte>("E1SyncHSUState", E1_Old_Friends.OnHSUExitSequence);
+            NetworkAPI.RegisterEvent<pReactorInteraction>("OnAttemptInteractReactor", Patch_LG_WardenObjective_Reactor.OnAttemptInteract);
+            NetworkAPI.RegisterEvent<byte>("E1ClientRequestInfo", E1_Old_Friends.ClientRequestInfo);
+            NetworkAPI.RegisterEvent<E1_Old_Friends.pObjectiveData>("E1ProvideObjectiveInfo", E1_Old_Friends.RecieveObjectiveInfo);
+            NetworkAPI.RegisterEvent<float>("E1SyncTemp", E1_Old_Friends.SyncTemp);
         }
     }
 }

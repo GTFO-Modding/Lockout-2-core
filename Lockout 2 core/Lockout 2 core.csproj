@@ -76,6 +76,7 @@
     <Compile Include="Custom Weapon code\Item_FlashGrenade_Throwable.cs" />
     <Compile Include="Custom Weapon code\Item_GrenadeLauncher_Projectile.cs" />
     <Compile Include="Custom Weapon code\Manager_WeaponAutoAim.cs" />
+    <Compile Include="Custom Weapon code\patches\Patch_ItemEquippable.cs" />
     <Compile Include="Custom Weapon code\patches\Patch_Weapon.cs" />
     <Compile Include="Custom Weapon code\patches\Patch_GlowStickInstance.cs" />
     <Compile Include="Custom Weapon code\patches\Patch_GrenadeBase.cs" />

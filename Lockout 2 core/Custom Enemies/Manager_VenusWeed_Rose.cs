@@ -1,7 +1,9 @@
 ﻿using Agents;
 using Enemies;
+using GTFO.API;
 using IRF;
 using Lockout_2_core.Custom_Level_Behavior;
+using SNetwork;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +18,7 @@ namespace Lockout_2_core.Custom_Enemies
 
         public void Awake()
         {
+            Current = this;
             m_petalAnimators = new List<Animator>();
             m_Light = transform.parent.GetComponentInChildren<Light>();
             m_Sound = new();
@@ -41,14 +44,26 @@ namespace Lockout_2_core.Custom_Enemies
             CoroutineHandler.Add(OpenShell(20));
         }
 
+        public static void RecieveAnimPacket(ulong x, pAnimation anim)
+        {
+            if (SNet.IsMaster) return;
+            switch(anim.m_TargetState)
+            {
+                case roseAnimation.Open: Current.PlayAnim(roseAnimation.Open, 0.03f, true); break;
+                case roseAnimation.Shut: Current.PlayAnim(roseAnimation.Shut, 0.08f, false); break;
+            }
+        }
+
         public void Open()
         {
             PlayAnim(roseAnimation.Open, 0.03f, true);
+            if (SNet.IsMaster) NetworkAPI.InvokeEvent("RoseBossSyncAnimationState", new pAnimation() { m_TargetState = roseAnimation.Open});
         }
 
         public void Shut()
         {
             PlayAnim(roseAnimation.Shut, 0.08f, false);
+            if (SNet.IsMaster) NetworkAPI.InvokeEvent("RoseBossSyncAnimationState", new pAnimation() { m_TargetState = roseAnimation.Shut});
         }
 
         public void Update()
@@ -161,6 +176,7 @@ namespace Lockout_2_core.Custom_Enemies
             }
         }
 
+
         public roseAnimation m_StateTarget = roseAnimation.Shut;
         public roseAnimation m_State = roseAnimation.Shut;
         public List<Animator> m_petalAnimators;
@@ -177,6 +193,12 @@ namespace Lockout_2_core.Custom_Enemies
             Wither = 2
         }
 
+        public struct pAnimation
+        {
+            public roseAnimation m_TargetState;
+        }
+
         public static event Action OnDead;
+        public static Manager_VenusWeed_Rose Current;
     }
 }

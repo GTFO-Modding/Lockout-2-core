@@ -127,9 +127,9 @@ namespace Lockout_2_core.Custom_Weapon_code
 
 
         const float DMGRADIUS_H = 2f;
-        const float DMGVALUE_H = 50.1f;
-        const float DMGRADIUS_L = 4f;
-        const float DMGVALUE_L = 30.1f;
+        const float DMGVALUE_H = 80.1f;
+        const float DMGRADIUS_L = 5f;
+        const float DMGVALUE_L = 20.1f;
         const float EXPLOSIONFORCE = 1000f;
 
         public int m_projCollideMask = LayerManager.MASK_ENEMY_PROJECTILE_COLLIDERS;

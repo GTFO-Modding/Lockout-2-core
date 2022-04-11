@@ -13,10 +13,12 @@ namespace Lockout_2_core.Custom_Level_Behavior
 {
     class VaultSecurityDoorPlug
     {
+        /*
         public static void Setup(GameObject plugGO)
         {
+            return;
             var portalDivider = plugGO.AddComponent<LG_PortalDivider>();
-            var plugDoorAlign = plugGO.transform.FindChild("Crossing/SecurityDoorAlign").gameObject.AddComponent<LG_PlugDoorAlign>();
+            var plugDoorAlign = plugGO.transform.FindChild("Crossing/PlugGate").gameObject.AddComponent<LG_PlugDoorAlign>();
 
             portalDivider.m_inFront = plugGO.transform.FindChild("InFront");
             portalDivider.m_behind = plugGO.transform.FindChild("Behind");
@@ -175,5 +177,6 @@ namespace Lockout_2_core.Custom_Level_Behavior
             lightMesh5_B.m_emitterMeshes[1] = lightMesh5_B.transform.parent.FindChild("g_prop_generic_light_led_rectangle_01_metal").gameObject.GetComponent<MeshRenderer>();
             lightMesh5_B.m_isEnabled = true;
         }
+        */
     }
 }

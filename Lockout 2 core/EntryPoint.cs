@@ -37,6 +37,7 @@ namespace Lockout_2_core
             Patch_GlowstickInstance.Inject(m_Harmony);
             Patch_FPSCamera.Inject(m_Harmony);
             Patch_Weapon.Inject(m_Harmony);
+            Patch_ItemEquippable.Inject(m_Harmony);
 
             //custom tools
             Patch_PlayerSync.Inject(m_Harmony);
@@ -89,7 +90,7 @@ namespace Lockout_2_core
 
         private void AssetAPI_OnStartupAssetsLoaded()
         {
-            VaultSecurityDoorPlug.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/SecDoor_8x8/Content/8x8DoorPlug.prefab").TryCast<GameObject>());
+            //VaultSecurityDoorPlug.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/SecDoor_8x8/Content/8x8DoorPlug.prefab").TryCast<GameObject>());
         }
 
         private static void AssetAPI_OnAssetBundlesLoaded()
@@ -123,7 +124,7 @@ namespace Lockout_2_core
             s_Captchas.Add("sU9Ar2 vm8TCR".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/sU9Ar2 vm8TCR.png").TryCast<Texture2D>());
             s_Captchas.Add("wBofIB iLdQLE".ToUpper(), AssetAPI.GetLoadedAsset("Assets/Bundle/Captcha/Content/wBofIB iLdQLE.png").TryCast<Texture2D>());
 
-            VaultSecurityDoor.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/SecDoor_8x8/Content/SecurityDoor_8x8.prefab").TryCast<GameObject>());
+            //VaultSecurityDoor.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/SecDoor_8x8/Content/SecurityDoor_8x8.prefab").TryCast<GameObject>());
             ReactorHSUPlatform.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/reactorCoolantPlatform/content/E1_CoolantHSU.prefab").TryCast<GameObject>());
         }
 

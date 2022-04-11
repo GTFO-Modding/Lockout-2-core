@@ -10,6 +10,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
 {
     class VaultSecurityDoor
     {
+        /*
         public static void Setup(GameObject vaultDoor)
         {
             var securityDoor = vaultDoor.AddComponent<LG_SecurityDoor>();
@@ -29,7 +30,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             var mapLookAtRevealer_Ping = mapLookAtRevealer.gameObject.AddComponent<PlayerPingTarget>();
             mapLookAtRevealer_Ping.m_pingTargetStyle = eNavMarkerStyle.PlayerPingDoor;
 
-            var doorBladeCuller = vaultDoor.transform.FindChild("Door").gameObject.AddComponent<LG_DoorBladeCuller>();
+            var doorBladeCuller = vaultDoor.transform.FindChild("Crossing/Door").gameObject.AddComponent<LG_DoorBladeCuller>();
 
             var interactUseKeyItem = crossing.transform.FindChild("Interaction_Use_KeyItem").gameObject.AddComponent<Interact_RequireKeyItem>();
             interactUseKeyItem.m_colliderToOwn = interactUseKeyItem.gameObject.GetComponent<Collider>();
@@ -119,11 +120,11 @@ namespace Lockout_2_core.Custom_Level_Behavior
             securityDoor.m_keypadAlign = vaultDoor.transform.FindChild("CatWalk/prop_wallPanel_d/g_prop_wallPanel_d");
             securityDoor.m_locksComp = securityDoor_Locks;
             securityDoor.m_mapLookatRevealer = mapLookAtRevealer;
-            securityDoor.m_securityDoorType = eSecurityDoorType.Bulkhead;
+            securityDoor.m_securityDoorType = eSecurityDoorType.Security;
             securityDoor.m_syncComp = door_Sync;
             securityDoor.m_terminalInterfaceComp = genericTerminalItem;
 
-            securityDoor_Anim.m_animator = vaultDoor.GetComponent<Animator>();
+            securityDoor_Anim.m_animator = crossing.GetComponent<Animator>();
             securityDoor_Anim.m_useLargeSounds = true;
             securityDoor_Anim.m_bulkheadLockPins = new(0);
             securityDoor_Anim.m_bulkheadLightStrips = new(0);
@@ -140,11 +141,8 @@ namespace Lockout_2_core.Custom_Level_Behavior
             navMeshObstable.carvingMoveThreshold = 0.1f;
             navMeshObstable.carvingTimeToStationary = 0.5f;
             navMeshObstable.center = new(0, 4, 0);
-            navMeshObstable.height = 4;
-            navMeshObstable.radius = 4;
             navMeshObstable.shape = NavMeshObstacleShape.Box;
             navMeshObstable.size = new(8, 8, 2);
-            navMeshObstable.velocity = new(0, 0, 0);
 
             portalDivider.m_inFront = vaultDoor.transform.FindChild("InFront");
             portalDivider.m_behind = vaultDoor.transform.FindChild("Behind");
@@ -163,5 +161,6 @@ namespace Lockout_2_core.Custom_Level_Behavior
             doorBladeCuller.m_customBoundsSize = new(8, 8, 2);
             doorBladeCuller.m_customBoundsOffset = new(0, 4, 0);
         }
+        */
     }
 }

@@ -270,7 +270,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             {
                 case eReactorInteraction.Initiate_startup: m_ReactorHeatRateTarget = 2.5f; break;
                 case eReactorInteraction.WaitForVerify_startup: m_ReactorHeatRateTarget = 0.2f; break;
-                case eReactorInteraction.Intensify_startup: m_ReactorHeatRateTarget = 4f; break;
+                case eReactorInteraction.Intensify_startup: m_ReactorHeatRateTarget = 3.1f; break;
                 case eReactorInteraction.Verify_startup: m_ReactorHeatRateTarget = 2.5f; break;
                 case eReactorInteraction.Verify_fail: m_ReactorHeatRateTarget = 2.5f; break;
                 case eReactorInteraction.Goto_active: m_ReactorHeatRateTarget = 1.0f; break;
@@ -331,11 +331,13 @@ namespace Lockout_2_core.Custom_Level_Behavior
             {
                 if (SNet.IsMaster && m_ReactorUpdateTimer < Time.time)
                 {
-                    NetworkAPI.InvokeEvent("E1SyncTemp", m_ReactorTemperature);
+                    //NetworkAPI.InvokeEvent("E1SyncTemp", m_ReactorTemperature);
+                    ClientRequestInfo(0,0);
                     m_ReactorUpdateTimer += 60;
                 }
 
                 m_ReactorTemperature += m_ReactorHeatRate * Time.deltaTime;
+                if (m_ReactorTemperature < -250) m_ReactorTemperature = -250;
 
                 if (m_ReactorTemperature < 94)
                 {
@@ -393,7 +395,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
                 if (m_DoCoolReactor)
                 {
                     if (Time.time < m_ReactorCoolTimer)
-                        m_ReactorHeatRate = Mathf.Lerp(m_ReactorHeatRate, -10, 0.03f);
+                        m_ReactorHeatRate = Mathf.Lerp(m_ReactorHeatRate, -9.5f, 0.03f);
 
                     else
                         m_DoCoolReactor = false;

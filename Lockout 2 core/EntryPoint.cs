@@ -29,6 +29,9 @@ namespace Lockout_2_core
             AssetAPI.OnStartupAssetsLoaded += AssetAPI_OnStartupAssetsLoaded;
             RundownManager.add_OnExpeditionGameplayStarted((Action)DisableStamina.Setup);
 
+            //Asset bundle scripts
+            ClassInjector.RegisterTypeInIl2Cpp<ForcedGenClusterSetup>();
+
             SetupConfig(base.Config);
 
             //custom weapon code
@@ -46,7 +49,7 @@ namespace Lockout_2_core
             Patch_GS_AfterLevel.Inject(m_Harmony);
 
             //custom rundown page
-            Patch_RundownManager.Inject(m_Harmony);
+            //Patch_RundownManager.Inject(m_Harmony); Patch is obsolete. Basegame allows this to be bypassed through datablocks now
             Patch_CM_ExpeditionIcon_New.Inject(m_Harmony);
             Patch_PUI_GameObjectives.Inject(m_Harmony);
             Patch_CM_PageMap.Inject(m_Harmony);
@@ -54,6 +57,10 @@ namespace Lockout_2_core
 
             //custom player behavior
             Patch_PUI_LocalPlayerStatus.Inject(m_Harmony);
+            Patch_FPSCamera_3RDPersonTest.Inject(m_Harmony);
+            Patch_PlayerAgent.Inject(m_Harmony);
+            Patch_PLOC_Downed.Inject(m_Harmony);
+            Patch_PlayerDialogManager.Inject(m_Harmony);
 
             //custom level behavior
             Patch_WardenObjectiveManager.Inject(m_Harmony);
@@ -68,9 +75,12 @@ namespace Lockout_2_core
             Patch_LG_TERM_ReactorError.Inject(m_Harmony);
             Patch_LG_AlarmShutdownOnTerminalJob.Inject(m_Harmony);
             Patch_LG_PowerGeneratorCluster.Inject(m_Harmony);
+            Patch_LG_PowerGeneratorClusterObjectiveEndSequence.Inject(m_Harmony);
             Patch_LG_LevelExitGeo.Inject(m_Harmony);
             Patch_LG_PopulateFunctionMarkersInZoneJob.Inject(m_Harmony);
             Patch_LG_WardenObjective_Reactor.Inject(m_Harmony);
+            Patch_LG_LateGeomorphScanJob.Inject(m_Harmony);
+            Patch_EnemyCostManager.Inject(m_Harmony);
 
             //custom enemies
             Patch_ES_HibernateWakeup.Inject(m_Harmony);
@@ -126,6 +136,10 @@ namespace Lockout_2_core
 
             //VaultSecurityDoor.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/SecDoor_8x8/Content/SecurityDoor_8x8.prefab").TryCast<GameObject>());
             ReactorHSUPlatform.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/reactorCoolantPlatform/content/E1_CoolantHSU.prefab").TryCast<GameObject>());
+
+            //Todo: Remove this shit! we should be doing this with unity but idk what's going wrong
+            var genCluster = AssetAPI.GetLoadedAsset("Assets/AssetBundles/CustomGeomorphs/CustomRefineryHub/Content/geo_RefineryHub_HSU_MC_01.prefab").TryCast<GameObject>().GetComponentInChildren<LG_PowerGeneratorCluster>();
+            genCluster.gameObject.AddComponent<ForcedGenClusterSetup>().m_GenCluster = genCluster;
         }
 
         private static void RegisterTypes()
@@ -136,6 +150,11 @@ namespace Lockout_2_core
             ClassInjector.RegisterTypeInIl2Cpp<Manager_WeaponAutoAim>();
             ClassInjector.RegisterTypeInIl2Cpp<Manager_VenusWeed_Rose>();
             ClassInjector.RegisterTypeInIl2Cpp<E1_Old_Friends>();
+            ClassInjector.RegisterTypeInIl2Cpp<ThirdPersonCamTarget>();
+            ClassInjector.RegisterTypeInIl2Cpp<LG_LightFadeAnimator>();
+            ClassInjector.RegisterTypeInIl2Cpp<PlayerDeathManager>();
+            var playerDeathManager = new GameObject("PlayerDeathManager");
+            playerDeathManager.AddComponent<PlayerDeathManager>();
 
             Manager_CustomLevelBehavior.setup();
         }

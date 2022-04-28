@@ -2,6 +2,7 @@
 using LevelGeneration;
 using Lockout_2_core.Custom_Enemies;
 using Lockout_2_core.Custom_Level_Behavior;
+using Lockout_2_core.Custom_Player_Behavior;
 
 namespace Lockout_2_core
 {
@@ -28,6 +29,9 @@ namespace Lockout_2_core
             NetworkAPI.RegisterEvent<byte>("E1ClientRequestInfo", E1_Old_Friends.ClientRequestInfo);
             NetworkAPI.RegisterEvent<E1_Old_Friends.pObjectiveData>("E1ProvideObjectiveInfo", E1_Old_Friends.RecieveObjectiveInfo);
             NetworkAPI.RegisterEvent<float>("E1SyncTemp", E1_Old_Friends.SyncTemp);
+
+            NetworkAPI.RegisterEvent<int>("PlayerDeathDisableRevive", PlayerDeathManager.RecieveDisablePlayerRevive);
+            NetworkAPI.RegisterEvent<int>("PlayerDeathPostDeath", PlayerDeathManager.RecievePostDeath);
         }
     }
 }

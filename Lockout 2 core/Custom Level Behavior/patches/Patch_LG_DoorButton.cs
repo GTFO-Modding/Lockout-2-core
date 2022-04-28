@@ -15,10 +15,12 @@ namespace Lockout_2_core
 
         public static bool OnWeakLockUnlocked()
         {
-            if (RundownManager.Current.m_activeExpedition.LevelLayoutData != 1000
-                || WardenObjectiveManager.Current.CheckWardenObjectiveCompleted(LG_LayerType.MainLayer)) return true;
+            if (RundownManager.Current.m_activeExpedition.LevelLayoutData != 1000 && RundownManager.Current.m_activeExpedition.LevelLayoutData != 1008) return true;
+            if (WardenObjectiveManager.Current.CheckWardenObjectiveCompleted(LG_LayerType.MainLayer) || s_Override) return true;
 
             return false;
         }
+
+        public static bool s_Override = false;
     }
 }

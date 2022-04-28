@@ -12,7 +12,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
         {
             var lightHolder1_F = GO.transform.FindChild("lightholder/LightHolder_1");
             var spotLightAmbient1_F = lightHolder1_F.transform.FindChild("LG_SpotLightAmbient").gameObject.AddComponent<LG_SpotLightAmbient>();
-            spotLightAmbient1_F.m_ambientPoint = spotLightAmbient1_F.transform.FindChild("AmbientPoint").gameObject.GetComponent<Light>();
+            //spotLightAmbient1_F.m_ambientPoint = spotLightAmbient1_F.transform.FindChild("AmbientPoint").gameObject.GetComponent<Light>();
             spotLightAmbient1_F.m_ambientScale = 0.5f;
             spotLightAmbient1_F.m_spotLight = spotLightAmbient1_F.GetComponent<Light>();
             spotLightAmbient1_F.m_category = LG_Light.LightCategory.Special;
@@ -27,7 +27,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             var lightHolder2_F = GO.transform.FindChild("lightholder/LightHolder_2");
             var spotLightAmbient2_F = lightHolder2_F.transform.FindChild("LG_SpotLightAmbient").gameObject.AddComponent<LG_SpotLightAmbient>();
-            spotLightAmbient2_F.m_ambientPoint = spotLightAmbient2_F.transform.FindChild("AmbientPoint").gameObject.GetComponent<Light>();
+            //spotLightAmbient2_F.m_ambientPoint = spotLightAmbient2_F.transform.FindChild("AmbientPoint").gameObject.GetComponent<Light>();
             spotLightAmbient2_F.m_ambientScale = 0.5f;
             spotLightAmbient2_F.m_spotLight = spotLightAmbient2_F.GetComponent<Light>();
             spotLightAmbient2_F.m_category = LG_Light.LightCategory.Special;
@@ -42,7 +42,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             var lightHolder3_F = GO.transform.FindChild("lightholder/LightHolder_3");
             var spotLightAmbient3_F = lightHolder3_F.transform.FindChild("LG_SpotLightAmbient").gameObject.AddComponent<LG_SpotLightAmbient>();
-            spotLightAmbient3_F.m_ambientPoint = spotLightAmbient3_F.transform.FindChild("AmbientPoint").gameObject.GetComponent<Light>();
+            //spotLightAmbient3_F.m_ambientPoint = spotLightAmbient3_F.transform.FindChild("AmbientPoint").gameObject.GetComponent<Light>();
             spotLightAmbient3_F.m_ambientScale = 0.5f;
             spotLightAmbient3_F.m_spotLight = spotLightAmbient3_F.GetComponent<Light>();
             spotLightAmbient3_F.m_category = LG_Light.LightCategory.Special;
@@ -57,7 +57,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             var lightHolder4_F = GO.transform.FindChild("lightholder/LightHolder_4");
             var spotLightAmbient4_F = lightHolder4_F.transform.FindChild("LG_SpotLightAmbient").gameObject.AddComponent<LG_SpotLightAmbient>();
-            spotLightAmbient4_F.m_ambientPoint = spotLightAmbient4_F.transform.FindChild("AmbientPoint").gameObject.GetComponent<Light>();
+            //spotLightAmbient4_F.m_ambientPoint = spotLightAmbient4_F.transform.FindChild("AmbientPoint").gameObject.GetComponent<Light>();
             spotLightAmbient4_F.m_ambientScale = 0.5f;
             spotLightAmbient4_F.m_spotLight = spotLightAmbient4_F.GetComponent<Light>();
             spotLightAmbient4_F.m_category = LG_Light.LightCategory.Special;
@@ -72,7 +72,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             var lightHolder5_F = GO.transform.FindChild("lightholder/LightHolder_5");
             var spotLightAmbient5_F = lightHolder5_F.transform.FindChild("LG_SpotLightAmbient").gameObject.AddComponent<LG_SpotLightAmbient>();
-            spotLightAmbient5_F.m_ambientPoint = spotLightAmbient5_F.transform.FindChild("AmbientPoint").gameObject.GetComponent<Light>();
+            //spotLightAmbient5_F.m_ambientPoint = spotLightAmbient5_F.transform.FindChild("AmbientPoint").gameObject.GetComponent<Light>();
             spotLightAmbient5_F.m_ambientScale = 0.5f;
             spotLightAmbient5_F.m_spotLight = spotLightAmbient5_F.GetComponent<Light>();
             spotLightAmbient5_F.m_category = LG_Light.LightCategory.Special;

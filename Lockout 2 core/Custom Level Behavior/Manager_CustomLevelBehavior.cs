@@ -6,7 +6,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
 {
     class Manager_CustomLevelBehavior
     {
-        public static void setup()
+        public static void situp()
         {
             A1 = new A1_Reawakening();
             B1 = new B1_Exothermic();

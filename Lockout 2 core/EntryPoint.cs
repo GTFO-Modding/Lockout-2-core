@@ -156,7 +156,7 @@ namespace Lockout_2_core
             var playerDeathManager = new GameObject("PlayerDeathManager");
             playerDeathManager.AddComponent<PlayerDeathManager>();
 
-            Manager_CustomLevelBehavior.setup();
+            Manager_CustomLevelBehavior.situp();
         }
 
         private static void SetupConfig(ConfigFile config)

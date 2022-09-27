@@ -24,19 +24,13 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             if (WardenObjectiveManager.Current.CheckWardenObjectiveCompleted(LG_LayerType.MainLayer)) return;
             SetPower(false);
+            Patch_LG_DoorButton.s_Override = false;
         }
 
         public void OnObjectiveCompleted()
         {
             SetPower(true);
-
-            foreach (var button in m_DoorButtons)
-            {
-                var weaklock = button.GetComponentInChildren<LG_WeakLock>();
-                if (weaklock == null) continue;
-                L.Debug("Button was locked, turning it back off");
-                button.m_enabled = false;
-            }
+            Patch_LG_DoorButton.s_Override = true;
 
             LG_LevelBuilder.Current.m_currentFloor.TryGetZoneByLocalIndex(eDimensionIndex.Reality, LG_LayerType.MainLayer, GameData.eLocalZoneIndex.Zone_1, out var zone1);
             var secDoor = zone1.m_sourceGate.GetComponentInChildren<LG_SecurityDoor>();
@@ -52,13 +46,21 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             foreach (var button in m_DoorButtons)
             {
-                L.Debug($"LG_DoorButton set to {status}");
-                button.m_enabled = status;
-                button.m_anim.gameObject.active = status;
+                if (status == false)
+                {
+                    button.m_enabled = false;
+                    button.m_anim.gameObject.active = false;
+                }
+                else
+                {
+                    button.m_anim.gameObject.active = true;
+                    var weaklock = button.GetComponentInChildren<LG_WeakLock>();
+                    if (weaklock == null) button.m_enabled = true;
+                    else if (weaklock.Status == eWeakLockStatus.Unlocked) button.m_enabled = true;
+                }
             }
             foreach (var terminal in m_Terminals)
             {
-                L.Debug($"LG_ComputerTerminal set to {status}");
                 terminal.transform.FindChild("Interaction").gameObject.active = status;
 
                 var display = terminal.transform.FindChild("Graphics/kit_ElectronicsTerminalConsole/Display");
@@ -66,7 +68,6 @@ namespace Lockout_2_core.Custom_Level_Behavior
             }
             foreach (var weaklock in m_WeakLock)
             {
-                L.Debug($"LG_WeakLock set to {status}");
                 weaklock.m_intHack.m_isActive = status;
 
                 var display = weaklock.transform.FindChild("HackableLock/SecurityLock/g_WeakLock/Security_Display_Locked");
@@ -76,17 +77,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
                     display = weaklock.transform.FindChild("HackableLock/Security_Display_Locked");
                     if (display != null) display.gameObject.active = status;
                 }
-                
             }
-            /*
-            foreach (var secdoor in m_SecurityDoor)
-            {
-                secdoor.transform.FindChild("crossing/Interaction_Use_KeyItem").gameObject.active = status;
-                secdoor.transform.FindChild("crossing/Interaction_Hack").gameObject.active = status;
-                secdoor.transform.FindChild("crossing/Interaction_Message").gameObject.active = status;
-                secdoor.transform.FindChild("crossing/Interaction_Open_Or_Activate").gameObject.active = status;
-            }
-            */
         }
 
         public void OnCleanup() 
@@ -101,6 +92,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             Patch_WardenObjectiveManager.OnObjectiveComplete -= OnObjectiveCompleted;
             Patch_WardenObjectiveManager.OnStartExpedition -= OnFactoryBuildComplete;
             Patch_GS_AfterLevel.OnLevelCleanup -= OnCleanup;
+            Patch_LG_DoorButton.s_Override = false;
         }
 
         public LG_DoorButton[] m_DoorButtons;

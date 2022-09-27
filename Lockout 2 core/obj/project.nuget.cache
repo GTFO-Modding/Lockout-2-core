@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "yG7G+bFG+62mv0s7ZI8NTvgJMNnxv2tLCDCDth+Y3m4CxsQqSCGxE/rPSPPERnVkPWy+EoB7cNwGxw6GY8W5wQ==",
+  "dgSpecHash": "isCAI82eNeyNmyasQuvUiMlVtXWW7n7n8ruoyKyRqRhGUI6+HGTZZFs3+1x6yEGqZ/7Fa1IwQtQunpdKtEjsOQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Admin-PC\\source\\repos\\Lockout 2 core\\Lockout 2 core\\Lockout 2 core.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Admin-PC\\.nuget\\packages\\versioninfogenerator\\2.0.0\\versioninfogenerator.2.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

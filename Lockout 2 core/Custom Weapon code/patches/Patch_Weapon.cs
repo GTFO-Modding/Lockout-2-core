@@ -23,7 +23,7 @@ namespace Lockout_2_core
 
             var arch = weaponRayData.owner.Inventory.WieldedItem.ArchetypeData;
             if (arch == null) return;
-            if (arch.persistentID != 1012 && arch.persistentID != 1005) return;
+            if (arch.persistentID != 1012 && arch.persistentID != 1005 && arch.persistentID != 2012 && arch.persistentID != 2005) return;
 
             Manager_WeaponAutoAim autoaim;
             if (!AutoAims.TryGetValue(arch.persistentID, out autoaim))

@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.AI;
-using UnhollowerBaseLib;
-using UnhollowerRuntimeLib;
 using System.Linq;
 
 namespace Lockout_2_core.Custom_Level_Behavior

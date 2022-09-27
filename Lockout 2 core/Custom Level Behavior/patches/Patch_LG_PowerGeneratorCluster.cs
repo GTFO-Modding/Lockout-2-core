@@ -19,25 +19,25 @@ namespace Lockout_2_core
         public static void PreSetup()
         {
             if (RundownManager.Current.m_activeExpedition.LevelLayoutData != 1004) return;
-            WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Type = eWardenObjectiveType.CentralGeneratorCluster;
+            WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Type = eWardenObjectiveType.CentralGeneratorCluster;
         }
 
         public static void PostSetup()
         {
             if (RundownManager.Current.m_activeExpedition.LevelLayoutData != 1004) return;
-            WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Type = eWardenObjectiveType.GatherSmallItems;
+            WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Type = eWardenObjectiveType.GatherSmallItems;
         }
 
         public static void PreOnBuildDone()
         {
             if (RundownManager.Current.m_activeExpedition.LevelLayoutData != 1008) return;
-            WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Type = eWardenObjectiveType.CentralGeneratorCluster;
+            WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Type = eWardenObjectiveType.CentralGeneratorCluster;
         }
 
         public static void PostOnBuildDone()
         {
             if (RundownManager.Current.m_activeExpedition.LevelLayoutData != 1008) return;
-            WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Type = eWardenObjectiveType.SpecialTerminalCommand;
+            WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Type = eWardenObjectiveType.SpecialTerminalCommand;
         }
     }
 }

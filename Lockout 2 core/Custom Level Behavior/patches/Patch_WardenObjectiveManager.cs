@@ -2,6 +2,8 @@
 using GameData;
 using HarmonyLib;
 using LevelGeneration;
+using Localization;
+using Lockout_2_core.Custom_Level_Behavior;
 using SNetwork;
 
 namespace Lockout_2_core
@@ -70,7 +72,7 @@ namespace Lockout_2_core
                 return;
             }
 
-            zoneDoor.SetupAsLockedNoKey("<color=red>://ERROR: Only one Data Hub wing is accessable at a time.</color>");
+            zoneDoor.SetupAsLockedNoKey(LocalizerGenocideReal.GenerateLocalizedText("<color=red>://ERROR: Only one Data Hub wing is accessable at a time.</color>"));
         }
         public static void Event_LockDoor_F1(WardenObjectiveEventData eventData)
         {
@@ -91,7 +93,7 @@ namespace Lockout_2_core
             }
 
             zoneDoor.m_sync.AttemptDoorInteraction(eDoorInteractionType.Close);
-            zoneDoor.SetupAsLockedNoKey($"<color=orange>ZONE {(int)eventData.LocalIndex} IN EMERGENCY LOCKDOWN.\n<u><color=orange>TYPE-F</u> BIOMASS CONTAINMENT BREACH DETECTED.\n CONTACT HAZARDOUS ENVIRONMENT CONTAINMENT UNIT IMMEDIATELY</color>");
+            zoneDoor.SetupAsLockedNoKey(LocalizerGenocideReal.GenerateLocalizedText($"<color=orange>ZONE {(int)eventData.LocalIndex} IN EMERGENCY LOCKDOWN.\n<u><color=orange>TYPE-F</u> BIOMASS CONTAINMENT BREACH DETECTED.\n CONTACT HAZARDOUS ENVIRONMENT CONTAINMENT UNIT IMMEDIATELY</color>"));
         }
         public static void Event_AddNavBeaconToBigPickups_F1(WardenObjectiveEventData eventData)
         {

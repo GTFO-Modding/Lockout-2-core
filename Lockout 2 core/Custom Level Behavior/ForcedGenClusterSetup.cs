@@ -25,7 +25,7 @@ namespace Lockout_2_core
             m_Node = m_Area.m_courseNode;
             m_Layer = m_Node.LayerType;
 
-            m_Objective = WardenObjectiveManager.ActiveWardenObjective(m_Layer);
+            m_Objective = WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer];
             m_ObjectiveTypeMemory = m_Objective.Type;
 
             L.Debug($"Layer: {m_Layer}\nObjecive Type: {m_Objective.Type}");
@@ -39,7 +39,7 @@ namespace Lockout_2_core
             m_GenCluster.m_terminalItemComp = termItem;
             m_GenCluster.SpawnNode = m_Node;
 
-            m_GenCluster.Setup();
+            m_GenCluster.Setup(0);
             m_Objective.Type = m_ObjectiveTypeMemory;
         }
 

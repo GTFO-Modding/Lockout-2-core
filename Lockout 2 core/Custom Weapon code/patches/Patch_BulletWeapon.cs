@@ -21,22 +21,22 @@ namespace Lockout_2_core
 
         public static void Update(BulletWeapon __instance)
         {
-            if (__instance.ArchetypeData.persistentID != 1005) return;          //Smart Machinegun: pull ammo from reserve
+            if (__instance.ArchetypeData.persistentID != 1005 && __instance.ArchetypeData.persistentID != 2005) return;          //Smart Machinegun: pull ammo from reserve
             __instance.Owner.Inventory.DoReload();
         }
 
         public static void Fire(BulletWeapon __instance)                        //Grenade launcher: fire grenade projectile
         {
-            if (__instance.ArchetypeData.persistentID == 1011)
+            if (__instance.ArchetypeData.persistentID == 1011 || __instance.ArchetypeData.persistentID == 2011)
                 Manager_GrenadeLauncher.Fire(__instance);
 
-            if (__instance.ArchetypeData.persistentID == 1004)
+            if (__instance.ArchetypeData.persistentID == 1004 || __instance.ArchetypeData.persistentID == 2004)
                 Manager_AntiMaterielRifle.Fire(__instance);
         }
 
         public static void OnWield(BulletWeapon __instance)                        //Smart Pistol: Assign manager to weapon
         {
-            if (__instance.ArchetypeData.persistentID != 1012 && __instance.ArchetypeData.persistentID != 1005) return;
+            if (__instance.ArchetypeData.persistentID != 1012 && __instance.ArchetypeData.persistentID != 1005 && __instance.ArchetypeData.persistentID != 2012 && __instance.ArchetypeData.persistentID != 2005) return;
             if (CheckOwner(__instance)) return;
             var autoAim = __instance.gameObject.GetComponent<Manager_WeaponAutoAim>();
 
@@ -55,7 +55,7 @@ namespace Lockout_2_core
 
         public static void OnUnWield(BulletWeapon __instance)
         {
-            if (__instance.ArchetypeData.persistentID != 1012 && __instance.ArchetypeData.persistentID != 1005) return;
+            if (__instance.ArchetypeData.persistentID != 1012 && __instance.ArchetypeData.persistentID != 1005 && __instance.ArchetypeData.persistentID != 2012 && __instance.ArchetypeData.persistentID != 2005) return;
             if (CheckOwner(__instance)) return;
             var autoAim = __instance.gameObject.GetComponent<Manager_WeaponAutoAim>();
             if (autoAim == null) return;

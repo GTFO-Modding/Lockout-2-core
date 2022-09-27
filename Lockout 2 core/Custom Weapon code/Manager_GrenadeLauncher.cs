@@ -17,7 +17,7 @@ namespace Lockout_2_core.Custom_Weapon_code
                 ItemMode.Instance,
                 bulletWeapon.MuzzleAlign.transform.position,
                 bulletWeapon.MuzzleAlign.transform.rotation,
-                normalized * 40f,
+                normalized * bulletWeapon.ArchetypeData.ShotgunConeSize,
                 bulletWeapon.transform.position,
                 bulletWeapon.Owner.CourseNode,
                 bulletWeapon.Owner

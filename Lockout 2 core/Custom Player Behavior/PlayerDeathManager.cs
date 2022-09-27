@@ -24,7 +24,9 @@ namespace Lockout_2_core.Custom_Player_Behavior
         public void KillLocalPlayerAgent()
         {
             L.Debug("KillLocalPlayerAgent()");
-            
+            if (m_LocalPlayerDeathIncurred) return;
+            m_LocalPlayerDeathIncurred = true;
+
             var player = PlayerManager.GetLocalPlayerAgent();
             var stateEnum = player.Locomotion.m_currentStateEnum;
 
@@ -161,6 +163,7 @@ namespace Lockout_2_core.Custom_Player_Behavior
             Current.SyncedPostDeath(player);
         }
 
+        public bool m_LocalPlayerDeathIncurred = false;
         public List<PlayerAgent> m_DeadPlayers = new();
         public List<int> m_DeadPlayerIDs = new();
         public GameObject m_LinkedFX = AssetAPI.GetLoadedAsset("Assets/PrefabInstance/FXC_Blood_Arterial.prefab").TryCast<GameObject>();

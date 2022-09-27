@@ -1,9 +1,8 @@
 ﻿using BepInEx;
-using BepInEx.IL2CPP;
+using BepInEx.Unity.IL2CPP;
 using GTFO.API;
 using HarmonyLib;
 using Lockout_2_core.Custom_Weapon_code;
-using UnhollowerRuntimeLib;
 using Il2CppSystem;
 using Lockout_2_core.Custom_Tools;
 using UnityEngine;
@@ -13,6 +12,7 @@ using Lockout_2_core.Custom_Level_Behavior;
 using AssetShards;
 using Lockout_2_core.Custom_Enemies;
 using System.Collections.Generic;
+using Il2CppInterop.Runtime.Injection;
 
 namespace Lockout_2_core
 {
@@ -36,24 +36,26 @@ namespace Lockout_2_core
 
             //custom weapon code
             Patch_BulletWeapon.Inject(m_Harmony);
+            Patch_Shotgun.Inject(m_Harmony);
             Patch_GrenadeBase.Inject(m_Harmony);
             Patch_GlowstickInstance.Inject(m_Harmony);
             Patch_FPSCamera.Inject(m_Harmony);
             Patch_Weapon.Inject(m_Harmony);
             Patch_ItemEquippable.Inject(m_Harmony);
+            Patch_GearManager.Inject(m_Harmony);
+            Patch_CM_PlayerLobbyBar.Inject(m_Harmony);
+            Patch_CM_ScrollWindow.Inject(m_Harmony);
+            Patch_CM_ScrollWindowInfoBox.Inject(m_Harmony);
+            Patch_CM_InventorySlotItem.Inject(m_Harmony);
 
             //custom tools
             Patch_PlayerSync.Inject(m_Harmony);
             Patch_CM_ScrollWindowInfoBox.Inject(m_Harmony);
-            Patch_LocalPlayerAgentSettings.Inject(m_Harmony);
+            //Patch_LocalPlayerAgentSettings.Inject(m_Harmony);
             Patch_GS_AfterLevel.Inject(m_Harmony);
 
             //custom rundown page
-            //Patch_RundownManager.Inject(m_Harmony); Patch is obsolete. Basegame allows this to be bypassed through datablocks now
-            Patch_CM_ExpeditionIcon_New.Inject(m_Harmony);
-            Patch_PUI_GameObjectives.Inject(m_Harmony);
-            Patch_CM_PageMap.Inject(m_Harmony);
-            Patch_CM_PageExpeditionSuccess.Inject(m_Harmony);
+            Patch_CM_PageRundown_New.Inject(m_Harmony);
 
             //custom player behavior
             Patch_PUI_LocalPlayerStatus.Inject(m_Harmony);
@@ -81,6 +83,7 @@ namespace Lockout_2_core
             Patch_LG_WardenObjective_Reactor.Inject(m_Harmony);
             Patch_LG_LateGeomorphScanJob.Inject(m_Harmony);
             Patch_EnemyCostManager.Inject(m_Harmony);
+            Patch_LG_WeakResourceContainer.Inject(m_Harmony);
 
             //custom enemies
             Patch_ES_HibernateWakeup.Inject(m_Harmony);
@@ -137,9 +140,6 @@ namespace Lockout_2_core
             //VaultSecurityDoor.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/SecDoor_8x8/Content/SecurityDoor_8x8.prefab").TryCast<GameObject>());
             ReactorHSUPlatform.Setup(AssetAPI.GetLoadedAsset("Assets/Bundle/reactorCoolantPlatform/content/E1_CoolantHSU.prefab").TryCast<GameObject>());
 
-            //Todo: Remove this shit! we should be doing this with unity but idk what's going wrong
-            var genCluster = AssetAPI.GetLoadedAsset("Assets/AssetBundles/CustomGeomorphs/CustomRefineryHub/Content/geo_RefineryHub_HSU_MC_01.prefab").TryCast<GameObject>().GetComponentInChildren<LG_PowerGeneratorCluster>();
-            genCluster.gameObject.AddComponent<ForcedGenClusterSetup>().m_GenCluster = genCluster;
         }
 
         private static void RegisterTypes()

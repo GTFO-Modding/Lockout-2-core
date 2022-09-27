@@ -30,6 +30,7 @@
   <ItemGroup>
     <Compile Include="CoroutineHandler.cs" />
     <Compile Include="Custom Enemies\Manager_VenusWeed_Rose.cs" />
+    <Compile Include="Custom Enemies\patches\Patch_ProjectileManager.cs" />
     <Compile Include="Custom Enemies\patches\Patch_InfectionSpitter.cs" />
     <Compile Include="Custom Enemies\patches\Patch_ES_HitReact.cs" />
     <Compile Include="Custom Enemies\patches\Patch_ES_HibernateWakeUp.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Custom Level Behavior\patches\Patch_EnemyCostManager.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_WardenObjectiveManager.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_LG_LateGeomorphScanJob.cs" />
+    <Compile Include="Custom Level Behavior\patches\Patch_LG_WeakResourceContainer.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_WardenObjectiveManagerExecuteEvent.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_LG_ComputerTerminalCommandInterpreter.cs" />
     <Compile Include="Custom Level Behavior\ForcedGenClusterSetup.cs" />
@@ -72,14 +74,13 @@
     <Compile Include="Custom Player Behavior\patches\Patch_PUI_LocalPlayerStatus.cs" />
     <Compile Include="Custom Player Behavior\PlayerDeathManager.cs" />
     <Compile Include="Custom Player Behavior\ThirdPersonCamTarget.cs" />
-    <Compile Include="Custom Rundown Page\patches\Patch_CM_ExpeditionIcon_New.cs" />
+    <Compile Include="Custom Rundown Page\patches\Patch_CM_PageRundown_New.cs" />
     <Compile Include="Custom Rundown Page\patches\Patch_CM_PageExpeditionSuccess.cs" />
     <Compile Include="Custom Rundown Page\patches\Patch_CM_PageMap.cs" />
     <Compile Include="Custom Rundown Page\patches\Patch_PUI_GameObjectives.cs" />
     <Compile Include="Custom Rundown Page\patches\Patch_RundownManager.cs" />
     <Compile Include="Custom Tools\Manager_NightVision.cs" />
     <Compile Include="Custom Level Behavior\patches\Patch_GS_StopElevatorRide.cs" />
-    <Compile Include="Custom Tools\patches\Patch_LocalPlayerAgentSettings.cs" />
     <Compile Include="Custom Tools\patches\Patch_CM_ScrollWindowInfoBox.cs" />
     <Compile Include="Custom Tools\patches\Patch_GS_AfterLevel.cs" />
     <Compile Include="Custom Tools\patches\Patch_PlayerSync.cs" />
@@ -89,7 +90,12 @@
     <Compile Include="Custom Weapon code\Item_FlashGrenade_Throwable.cs" />
     <Compile Include="Custom Weapon code\Item_GrenadeLauncher_Projectile.cs" />
     <Compile Include="Custom Weapon code\Manager_WeaponAutoAim.cs" />
+    <Compile Include="Custom Weapon code\patches\Patch_Shotgun.cs" />
+    <Compile Include="Custom Weapon code\patches\Patch_CM_InventorySlotItem.cs" />
+    <Compile Include="Custom Weapon code\patches\Patch_CM_ScrollWindow.cs" />
+    <Compile Include="Custom Weapon code\patches\Patch_CM_PlayerLobbyBar.cs" />
     <Compile Include="Custom Weapon code\patches\Patch_ItemEquippable.cs" />
+    <Compile Include="Custom Weapon code\patches\Patch_GearManager.cs" />
     <Compile Include="Custom Weapon code\patches\Patch_Weapon.cs" />
     <Compile Include="Custom Weapon code\patches\Patch_GlowStickInstance.cs" />
     <Compile Include="Custom Weapon code\patches\Patch_GrenadeBase.cs" />

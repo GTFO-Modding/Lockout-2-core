@@ -28,6 +28,18 @@ namespace Lockout_2_core.Custom_Weapon_code
             }
         }
 
+        public void Start()
+        {
+            if (m_grenadeBase.Owner.Inventory.WieldedItem.ArchetypeData.persistentID == 2011)
+            {
+                DMGRADIUS_H = 4f;
+                DMGVALUE_H = 100.1f;
+                DMGRADIUS_L = 8f;
+                DMGVALUE_L = 50.1f;
+                EXPLOSIONFORCE = 5000f;
+            }
+        }
+
         public void FixedUpdate()
         {
             if (m_rigidbody.useGravity)
@@ -126,11 +138,11 @@ namespace Lockout_2_core.Custom_Weapon_code
 
 
 
-        const float DMGRADIUS_H = 2f;
-        const float DMGVALUE_H = 80.1f;
-        const float DMGRADIUS_L = 5f;
-        const float DMGVALUE_L = 20.1f;
-        const float EXPLOSIONFORCE = 1000f;
+        public float DMGRADIUS_H = 2f;
+        public float DMGVALUE_H = 80.1f;
+        public float DMGRADIUS_L = 5f;
+        public float DMGVALUE_L = 20.1f;
+        public float EXPLOSIONFORCE = 1000f;
 
         public int m_projCollideMask = LayerManager.MASK_ENEMY_PROJECTILE_COLLIDERS;
         public int m_explosionTargetMask = LayerManager.MASK_EXPLOSION_TARGETS;

@@ -12,6 +12,7 @@ using UnityEngine;
 using System.Text.Json;
 using System.IO;
 using MTFO.Managers;
+using Localization;
 
 namespace Lockout_2_core.Custom_Level_Behavior
 {
@@ -91,20 +92,6 @@ namespace Lockout_2_core.Custom_Level_Behavior
                 EnemyWaveData = new()
                 {
                     TriggerAlarm = true,
-                    WavePopulation = 40,
-                    WaveSettings = 138,
-                    SpawnDelay = 0
-                }
-            });
-            m_EventsOnGeneratorScanComplete.Add(new()
-            {
-                Type = eWardenObjectiveEventType.SpawnEnemyWave,
-                Delay = 0,
-                Layer = LG_LayerType.MainLayer,
-                DimensionIndex = eDimensionIndex.Reality,
-                EnemyWaveData = new()
-                {
-                    TriggerAlarm = true,
                     WavePopulation = 43,
                     WaveSettings = 139,
                     SpawnDelay = 0
@@ -133,16 +120,16 @@ namespace Lockout_2_core.Custom_Level_Behavior
             m_Terminals = GameObject.FindObjectsOfType<LG_ComputerTerminal>();
             m_WeakLock = GameObject.FindObjectsOfType<LG_WeakLock>();
 
-            LG_LevelBuilder.Current.m_currentFloor.allZones[3].m_sourceGate.SpawnedDoor.TryCast<LG_SecurityDoor>().OpenLockedSecurityDoor();
-            LG_LevelBuilder.Current.m_currentFloor.allZones[5].m_sourceGate.SpawnedDoor.TryCast<LG_SecurityDoor>().OpenLockedSecurityDoor();
-            LG_LevelBuilder.Current.m_currentFloor.allZones[7].m_sourceGate.SpawnedDoor.TryCast<LG_SecurityDoor>().OpenLockedSecurityDoor();
+            LG_LevelBuilder.Current.m_currentFloor.allZones[3].m_sourceGate.SpawnedDoor.TryCast<LG_SecurityDoor>().ForceOpenSecurityDoor();
+            LG_LevelBuilder.Current.m_currentFloor.allZones[5].m_sourceGate.SpawnedDoor.TryCast<LG_SecurityDoor>().ForceOpenSecurityDoor();
+            LG_LevelBuilder.Current.m_currentFloor.allZones[7].m_sourceGate.SpawnedDoor.TryCast<LG_SecurityDoor>().ForceOpenSecurityDoor();
 
-            m_GenCluster = LG_LevelBuilder.Current.m_currentFloor.allZones[2].m_areas[0].GetComponentInChildren<LG_PowerGeneratorCluster>();
+            m_GenCluster = LG_LevelBuilder.Current.m_currentFloor.allZones[2].m_areas[1].GetComponentInChildren<LG_PowerGeneratorCluster>();
             m_GenCluster.m_chainedPuzzleMidObjective.add_OnPuzzleSolved((Action)(() => 
             {
                 WardenObjectiveManager.CheckAndExecuteEventsOnTrigger(m_EventsOnGeneratorScanComplete, eWardenObjectiveEventTrigger.None, true);
                 Patch_EnemyCostManager.s_MultiplyCost = true;
-                Patch_EnemyCostManager.s_Multi = 0.65f;
+                Patch_EnemyCostManager.s_Multi = 0.8f;
                 Patch_WardenObjectiveManager.s_AllowObjectiveComplete = true;
             }));
 
@@ -233,7 +220,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             var zone = LG_LevelBuilder.Current.m_currentFloor.allZones[localIndex];
             var secDoor = zone.m_sourceGate.SpawnedDoor.TryCast<LG_SecurityDoor>();
             secDoor.m_sync.AttemptDoorInteraction(eDoorInteractionType.Close);
-            secDoor.m_locks.SetupAsLockedNoKey($"<color=orange>ZONE {localIndex} IN EMERGENCY LOCKDOWN.\n<u><color=orange>TYPE-F</u> BIOMASS CONTAINMENT BREACH DETECTED.\n CONTACT HAZARDOUS ENVIRONMENT CONTAINMENT UNIT IMMEDIATELY</color>");
+            secDoor.m_locks.SetupAsLockedNoKey(LocalizerGenocideReal.GenerateLocalizedText($"<color=orange>ZONE {localIndex} IN EMERGENCY LOCKDOWN.\n<u><color=orange>TYPE-F</u> BIOMASS CONTAINMENT BREACH DETECTED.\n CONTACT HAZARDOUS ENVIRONMENT CONTAINMENT UNIT IMMEDIATELY</color>"));
             zone.m_sourceGate.IsTraversable = false;
             zone.m_sourceGate.HasBeenOpenedDuringPlay = false;
         }
@@ -257,6 +244,13 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             if (!m_SealedZones.Contains(3) || !m_SealedZones.Contains(5) || !m_SealedZones.Contains(7)) return;
             WardenObjectiveManager.CheckAndExecuteEventsOnTrigger(m_EventsOnAllDoorsSealed, eWardenObjectiveEventTrigger.None, true);
+
+            foreach (var mevent in Mastermind.Current.m_events) 
+            {
+                Mastermind.Current.RemoveEvent(mevent);
+                L.Debug($"Removed mastermind event {mevent.EventID}");
+            }
+
             m_GenCluster.m_sound.Post(602369431);
         }
 
@@ -287,6 +281,13 @@ namespace Lockout_2_core.Custom_Level_Behavior
                 {
                     if (!PlayerManager.PlayerAgentsInLevel.Contains(player)) continue;
                     if (SNet.IsMaster) player.Damage.NoAirDamage(0.75f);
+
+                    if (player.Locomotion.m_currentStateEnum == PlayerLocomotion.PLOC_State.Downed && player == PlayerManager.GetLocalPlayerAgent())
+                    {
+                        PlayerDeathManager.Current.KillLocalPlayerAgent();
+                        Patch_PLOC_Downed.s_PermaDeath = false;
+                    }
+
                     allTargetsDead = false;
                 }
                 yield return new WaitForSeconds(2.0f);

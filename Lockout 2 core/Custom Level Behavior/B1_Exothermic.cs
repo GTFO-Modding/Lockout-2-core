@@ -4,11 +4,11 @@ using LevelGeneration;
 using SNetwork;
 using System;
 using System.Collections.Generic;
-using UnhollowerRuntimeLib;
 using UnityEngine;
 using System.Linq;
 using GameData;
 using Localization;
+using Il2CppInterop.Runtime;
 
 namespace Lockout_2_core.Custom_Level_Behavior
 {
@@ -61,7 +61,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
                     m_CoolantHSU.m_publicName = "HEAT_EXCHANGER_DC1";
                     m_CoolantHSU.SpawnNode = LG_LevelBuilder.Current.m_currentFloor.allZones[1].m_areas[0].m_courseNode;
-                    m_CoolantHSU.Setup();
+                    m_CoolantHSU.SetupFromCustomGeomorph();
 
                     m_CoolantHSU.name = "B1_CoolantHSU";
                     m_CoolantHSU.m_terminalItem.SpawnNode = LG_LevelBuilder.Current.m_currentFloor.allZones[1].m_areas[0].m_courseNode;
@@ -81,8 +81,8 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             m_CoolantHSU.add_OnHSUExitSequence((Action<LG_HSUActivator_Core>)OnHSUExitSequence);
             m_CoolantTerminal = LG_LevelBuilder.Current.m_currentFloor.allZones[1].TerminalsSpawnedInZone[0];
-            m_CoolantTerminal.SetupAsWardenObjectiveSpecialCommand();
-            m_CoolantTerminal.TrySyncSetCommandRemoved(TERM_Command.WardenObjectiveSpecialCommand);
+            m_CoolantTerminal.SetupAsWardenObjectiveSpecialCommand(0);
+            m_CoolantTerminal.TrySyncSetCommandHidden(TERM_Command.WardenObjectiveSpecialCommand);
             m_CoolantTerminal.m_sound.Post(AK.EVENTS.DOOR_ALARM);
 
             m_CoolantTerminal.m_command.AddOutputEmptyLine();
@@ -108,7 +108,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             else
             {
                 if (m_CoolantTerminal.m_command.m_commandHelpStrings.ContainsKey(TERM_Command.UniqueCommand1))
-                    m_CoolantTerminal.m_command.m_commandHelpStrings[TERM_Command.UniqueCommand1][0] = "Halt the DeconUnit error reporting system. " + $"<color=orange>{4 - m_SuppressCount} / 4 uses remaining</color>";
+                    m_CoolantTerminal.m_command.m_commandHelpStrings[TERM_Command.UniqueCommand1] = LocalizerGenocideReal.GenerateLocalizedText("Halt the DeconUnit error reporting system. " + $"<color=orange>{4 - m_SuppressCount} / 4 uses remaining</color>");
             }
         }
 
@@ -129,9 +129,9 @@ namespace Lockout_2_core.Custom_Level_Behavior
                 text.UntranslatedText = "Air Decontamination Unit restored to working condition. Proceed to input command [SPECIAL_COMMAND] in [ITEM_SERIAL]";
                 WardenObjectiveManager.DisplayWardenIntel(LG_LayerType.MainLayer, text);
 
-                if (m_CoolantTerminal.CommandIsRemoved(TERM_Command.WardenObjectiveSpecialCommand)) UnRemoveCommand(m_CoolantTerminal, TERM_Command.WardenObjectiveSpecialCommand);
+                if (m_CoolantTerminal.CommandIsHidden(TERM_Command.WardenObjectiveSpecialCommand)) m_CoolantTerminal.TrySyncSetCommandShow(TERM_Command.WardenObjectiveSpecialCommand);
 
-                m_CoolantTerminal.TrySyncSetCommandRemoved(TERM_Command.UniqueCommand1);
+                m_CoolantTerminal.TrySyncSetCommandHidden(TERM_Command.UniqueCommand1);
             }
             else
             {
@@ -156,7 +156,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             m_SuppressCount += 1;
             m_CoolantTerminal.m_sound.Stop();
-            m_CoolantTerminal.m_command.m_commandHelpStrings[TERM_Command.UniqueCommand1][0] = "Halt the DeconUnit error reporting system. " + $"<color=orange>{4 - Manager_CustomLevelBehavior.B1.m_SuppressCount} / 4 uses remaining</color>";
+            m_CoolantTerminal.m_command.m_commandHelpStrings[TERM_Command.UniqueCommand1] = LocalizerGenocideReal.GenerateLocalizedText("Halt the DeconUnit error reporting system. " + $"<color=orange>{4 - Manager_CustomLevelBehavior.B1.m_SuppressCount} / 4 uses remaining</color>");
 
             m_CoolantTerminal.AddLine($"<color=orange>{4 - m_SuppressCount} / 4</color> Command Usages Remaining");
 
@@ -175,13 +175,13 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             m_CoolantTerminal.m_sound.Post(AK.EVENTS.DOOR_ALARM);
 
-            if (m_SuppressCount < 4 && m_CoolantTerminal.CommandIsRemoved(TERM_Command.UniqueCommand1)) UnRemoveCommand(m_CoolantTerminal, TERM_Command.UniqueCommand1);
+            if (m_SuppressCount < 4 && m_CoolantTerminal.CommandIsHidden(TERM_Command.UniqueCommand1)) m_CoolantTerminal.TrySyncSetCommandShow(TERM_Command.UniqueCommand1);
 
             m_CoolantTerminal.m_command.ClearOutputQueueAndScreenBuffer();
             m_CoolantTerminal.AddLine("<color=orange>WARNING: AIR DECONTAMINATION UNIT CRITICAL ERROR - COOLANT RESUPPLY NEEDED\nSEVERITY: EMERGENCY</color>");
         }
 
-        public static void ClientRequestInfo(ulong x, byte y)
+        public static void ClientRequestInfo(ulong x, int y)
         {
             if (!SNet.IsMaster) return;
 
@@ -191,9 +191,9 @@ namespace Lockout_2_core.Custom_Level_Behavior
             byte terminalStatus = 0;
             var term = Manager_CustomLevelBehavior.B1.m_CoolantTerminal;
 
-            if (term.CommandIsRemoved(TERM_Command.WardenObjectiveSpecialCommand) && !term.CommandIsRemoved(TERM_Command.UniqueCommand1)) terminalStatus = 1;
-            if (!term.CommandIsRemoved(TERM_Command.WardenObjectiveSpecialCommand) && term.CommandIsRemoved(TERM_Command.UniqueCommand1)) terminalStatus = 2;
-            if (term.CommandIsRemoved(TERM_Command.WardenObjectiveSpecialCommand) && term.CommandIsRemoved(TERM_Command.UniqueCommand1)) terminalStatus = 3;
+            //if (term.CommandIsRemoved(TERM_Command.WardenObjectiveSpecialCommand) && !term.CommandIsRemoved(TERM_Command.UniqueCommand1)) terminalStatus = 1;
+            //if (!term.CommandIsRemoved(TERM_Command.WardenObjectiveSpecialCommand) && term.CommandIsRemoved(TERM_Command.UniqueCommand1)) terminalStatus = 2;
+            //if (term.CommandIsRemoved(TERM_Command.WardenObjectiveSpecialCommand) && term.CommandIsRemoved(TERM_Command.UniqueCommand1)) terminalStatus = 3;
             /*
             removedCommands.Add(Manager_CustomLevelBehavior.B1.m_CoolantTerminal.m_command.m_removedCommands[0]);
             removedCommands.Add(Manager_CustomLevelBehavior.B1.m_CoolantTerminal.m_command.m_removedCommands[1]);
@@ -228,16 +228,16 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             switch (data.TerminalStatus)
             {
-                case 0: UnRemoveCommand(Manager_CustomLevelBehavior.B1.m_CoolantTerminal, TERM_Command.WardenObjectiveSpecialCommand); UnRemoveCommand(Manager_CustomLevelBehavior.B1.m_CoolantTerminal, TERM_Command.UniqueCommand1); break;
-                case 1: Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandRemoved(TERM_Command.WardenObjectiveSpecialCommand); UnRemoveCommand(Manager_CustomLevelBehavior.B1.m_CoolantTerminal, TERM_Command.UniqueCommand1); break;
-                case 2: UnRemoveCommand(Manager_CustomLevelBehavior.B1.m_CoolantTerminal, TERM_Command.WardenObjectiveSpecialCommand); Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandRemoved(TERM_Command.UniqueCommand1); break;
-                case 3: Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandRemoved(TERM_Command.WardenObjectiveSpecialCommand); Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandRemoved(TERM_Command.UniqueCommand1); break;
+                case 0: Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandShow(TERM_Command.WardenObjectiveSpecialCommand); Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandShow(TERM_Command.UniqueCommand1); break;
+                case 1: Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandHidden(TERM_Command.WardenObjectiveSpecialCommand); Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandShow(TERM_Command.UniqueCommand1); break;
+                case 2: Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandShow(TERM_Command.WardenObjectiveSpecialCommand); Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandHidden(TERM_Command.UniqueCommand1); break;
+                case 3: Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandHidden(TERM_Command.WardenObjectiveSpecialCommand); Manager_CustomLevelBehavior.B1.m_CoolantTerminal.TrySyncSetCommandHidden(TERM_Command.UniqueCommand1); break;
             }
 
-            L.Debug($"{!Manager_CustomLevelBehavior.B1.m_CoolantTerminal.CommandIsRemoved(TERM_Command.UniqueCommand1)} | {Manager_CustomLevelBehavior.B1.m_CoolantTerminal.CommandIsRemoved(TERM_Command.WardenObjectiveSpecialCommand)}");
+            L.Debug($"{!Manager_CustomLevelBehavior.B1.m_CoolantTerminal.CommandIsHidden(TERM_Command.UniqueCommand1)} | {Manager_CustomLevelBehavior.B1.m_CoolantTerminal.CommandIsHidden(TERM_Command.WardenObjectiveSpecialCommand)}");
 
             if (Manager_CustomLevelBehavior.B1.m_CoolantTerminal.m_command.m_commandHelpStrings.ContainsKey(TERM_Command.UniqueCommand1))
-                Manager_CustomLevelBehavior.B1.m_CoolantTerminal.m_command.m_commandHelpStrings[TERM_Command.UniqueCommand1][0] = "Halt the DeconUnit error reporting system. " + $"<color=orange>{4 - Manager_CustomLevelBehavior.B1.m_SuppressCount} / 4 uses remaining</color>";
+                Manager_CustomLevelBehavior.B1.m_CoolantTerminal.m_command.m_commandHelpStrings[TERM_Command.UniqueCommand1] = LocalizerGenocideReal.GenerateLocalizedText("Halt the DeconUnit error reporting system. " + $"<color=orange>{4 - Manager_CustomLevelBehavior.B1.m_SuppressCount} / 4 uses remaining</color>");
         }
 
         public static void RecieveObjectiveUpdate(ulong x, pObjectiveUpdate data)
@@ -276,7 +276,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             L.Debug("Somebody just shutted off the alarm :(");
             Manager_CustomLevelBehavior.B1.m_SuppressCount += 1;
             Manager_CustomLevelBehavior.B1.m_CoolantTerminal.m_sound.Stop();
-            Manager_CustomLevelBehavior.B1.m_CoolantTerminal.m_command.m_commandHelpStrings[TERM_Command.UniqueCommand1][0] = "Halt the DeconUnit error reporting system. " + $"<color=orange>{4 - Manager_CustomLevelBehavior.B1.m_SuppressCount} / 4 uses remaining</color>";
+            Manager_CustomLevelBehavior.B1.m_CoolantTerminal.m_command.m_commandHelpStrings[TERM_Command.UniqueCommand1] = LocalizerGenocideReal.GenerateLocalizedText("Halt the DeconUnit error reporting system. " + $"<color=orange>{4 - Manager_CustomLevelBehavior.B1.m_SuppressCount} / 4 uses remaining</color>");
 
             Manager_CustomLevelBehavior.B1.m_CoolantTerminal.AddLine($"<color=orange>{4 - Manager_CustomLevelBehavior.B1.m_SuppressCount} / 4</color> Command Usages Remaining");
 

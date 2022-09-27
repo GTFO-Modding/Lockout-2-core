@@ -1,11 +1,11 @@
 ﻿using GameData;
 using GTFO.API;
+using Il2CppInterop.Runtime;
 using LevelGeneration;
 using Player;
 using SNetwork;
 using System;
 using System.Collections.Generic;
-using UnhollowerRuntimeLib;
 using UnityEngine;
 
 namespace Lockout_2_core.Custom_Level_Behavior
@@ -98,7 +98,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             NetworkAPI.InvokeEvent("C1DisableBSOD", 0);
             DisableBSOD();
         }
-        public static void RecieveDisableBSOD(ulong x, byte y)
+        public static void RecieveDisableBSOD(ulong x, int y)
         {
             L.Debug("Recieved DisableBSOD packet!");
             Manager_CustomLevelBehavior.C1.DisableBSOD();
@@ -148,7 +148,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             m_WardenTerminal.AddLine("Use Command <color=orange>INPUT_VERIFY [VERIFICATION CODE 1] [VERIFICATION CODE 2]</color> to proceed", false);
 
             L.Debug("Adding UniqueCommand1 to terminal");
-            m_WardenTerminal.m_command.AddCommand(TERM_Command.UniqueCommand1, "INPUT_VERIFY", "Input a human verification code");
+            m_WardenTerminal.m_command.AddCommand(TERM_Command.UniqueCommand1, "INPUT_VERIFY", LocalizerGenocideReal.GenerateLocalizedText("Input a human verification code"));
 
             L.Debug("Activating CaptchaHolder");
             m_CaptchaHolder.active = true;
@@ -197,7 +197,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
                 else
                 {
                     L.Debug("Captcha puzzle is complete! Removing the terminal command");
-                    m_WardenTerminal.TrySyncSetCommandRemoved(TERM_Command.UniqueCommand1);
+                    m_WardenTerminal.TrySyncSetCommandHidden(TERM_Command.UniqueCommand1);
                     m_WardenTerminal.AddLine("Verification sequence successful. Alarm sequence disabled");
                     m_WardenTerminal.AddLine($"Terminal {m_WardenTerminal.m_serialNumber} boot sequence completed.");
                     m_WardenTerminal.m_sound.Post(AK.EVENTS.HACKING_PUZZLE_SUCCESS);
@@ -208,7 +208,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
                     m_ExitGeo.ActivateWinCondition();
 
                     L.Debug("Executing EventsOnActivate from the active warden objective");
-                    WardenObjectiveManager.CheckAndExecuteEventsOnTrigger(WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).EventsOnActivate, eWardenObjectiveEventTrigger.OnStart, true);
+                    WardenObjectiveManager.CheckAndExecuteEventsOnTrigger(WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].EventsOnActivate, eWardenObjectiveEventTrigger.OnStart, true);
                 }
             }
             else 
@@ -228,7 +228,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             NetworkAPI.InvokeEvent("C1SyncSmallPickup", 0);
             UpdateSmallPickupDoor();
         }
-        public static void SyncOnCollectSmallPickup(ulong x, byte y)
+        public static void SyncOnCollectSmallPickup(ulong x, int y)
         {
             L.Debug("Somebody collected a small pickup, updating the objective door for this client");
             Manager_CustomLevelBehavior.C1.UpdateSmallPickupDoor();
@@ -236,7 +236,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
         public void UpdateSmallPickupDoor()
         {
             L.Debug("UpdateSmallPickupDoor()");
-            var gatherReqCount = WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Gather_RequiredCount;
+            var gatherReqCount = WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Gather_RequiredCount;
 
             var objetiveSecDoor = LG_LevelBuilder.Current.m_currentFloor.allZones[3].m_sourceGate.GetComponentInChildren<LG_SecurityDoor>();
             var doorLock = objetiveSecDoor.m_locks.TryCast<LG_SecurityDoor_Locks>();
@@ -248,10 +248,10 @@ namespace Lockout_2_core.Custom_Level_Behavior
                 if (!player.IsInSlot) continue;
 
                 backpack = PlayerBackpackManager.GetBackpack(player);
-                collectedItems += backpack.CountPocketItem(WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Gather_ItemId);
+                collectedItems += backpack.CountPocketItem(WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Gather_ItemId);
             }
 
-            doorLock.m_lockedWithNoKeyInteractionText = $"<color=red>://ERR_508: - Zone Security Lockdown://\n<color=orange>[{gatherReqCount - collectedItems}]<color=red> Unauthorized <u>Personell IDs</u> detected within the Sector Inventory Monitoring system.\nPlease contact your security administrator immediately.</color>";
+            doorLock.m_lockedWithNoKeyInteractionText = LocalizerGenocideReal.GenerateLocalizedText($"<color=red>://ERR_508: - Zone Security Lockdown://\n<color=orange>[{gatherReqCount - collectedItems}]<color=red> Unauthorized <u>Personell IDs</u> detected within the Sector Inventory Monitoring system.\nPlease contact your security administrator immediately.</color>");
             doorLock.m_intCustomMessage.m_message = doorLock.m_lockedWithNoKeyInteractionText;
 
             L.Debug($"Updated security door text - {collectedItems} pickups collected, {gatherReqCount - collectedItems} remaining");
@@ -297,7 +297,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             Patch_GS_AfterLevel.OnLevelCleanup -= OnCleanup;
         }
 
-        public static void ClientRequestInfo(ulong x, byte y)
+        public static void ClientRequestInfo(ulong x, int y)
         {
             L.Debug("Client request info: Sending warden terminal data to clients");
 

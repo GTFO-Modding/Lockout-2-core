@@ -4,12 +4,12 @@ using LevelGeneration;
 using SNetwork;
 using System;
 using System.Collections.Generic;
-using UnhollowerRuntimeLib;
 using UnityEngine;
 using GameData;
 using Lockout_2_core.Custom_Enemies;
 using Enemies;
 using System.Linq;
+using Il2CppInterop.Runtime;
 
 namespace Lockout_2_core.Custom_Level_Behavior
 {
@@ -164,7 +164,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             m_CoolantHSU_Holder.transform.localEulerAngles = new(0, 90, 0);
 
             var waterPool = m_CoolantHSU_Holder.transform.FindChild("WaterPlane");
-            var allMat = GameObject.FindObjectsOfTypeAll(UnhollowerRuntimeLib.Il2CppType.From(typeof(Material))).Select((x) => x.Cast<Material>()).ToArray();
+            var allMat = GameObject.FindObjectsOfTypeAll(Il2CppType.From(typeof(Material))).Select((x) => x.Cast<Material>()).ToArray();
             foreach (var mat in allMat)
             {
                 if (!mat.name.Contains("service_water_plane_2x2")) continue;
@@ -173,11 +173,11 @@ namespace Lockout_2_core.Custom_Level_Behavior
                 break;
             }
 
-            var existingObjective = WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Type;
-            WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Type = eWardenObjectiveType.ActivateSmallHSU;
+            var existingObjective = WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Type;
+            WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Type = eWardenObjectiveType.ActivateSmallHSU;
             L.Debug($"Set Objective Type to {eWardenObjectiveType.ActivateSmallHSU}");
 
-            m_HSU_Cores = GameObject.FindObjectsOfTypeAll(UnhollowerRuntimeLib.Il2CppType.From(typeof(LG_HSUActivator_Core))).Select((x) => x.Cast<LG_HSUActivator_Core>()).ToArray();
+            m_HSU_Cores = GameObject.FindObjectsOfTypeAll(Il2CppType.From(typeof(LG_HSUActivator_Core))).Select((x) => x.Cast<LG_HSUActivator_Core>()).ToArray();
             foreach (var instance in m_HSU_Cores)
             {
                 if (instance.gameObject.name == "HSU_Activator_machine" && m_CoolantHSU == null)
@@ -186,7 +186,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
                     m_CoolantHSU.m_publicName = "HEAT_EXCHANGER_DC1";
                     m_CoolantHSU.SpawnNode = LG_LevelBuilder.Current.m_currentFloor.allZones[2].m_areas[0].m_courseNode;
-                    m_CoolantHSU.Setup();
+                    m_CoolantHSU.SetupFromCustomGeomorph();
 
                     m_CoolantHSU.name = "E1_CoolantHSU";
                     m_CoolantHSU.m_terminalItem.SpawnNode = LG_LevelBuilder.Current.m_currentFloor.allZones[2].m_areas[0].m_courseNode;
@@ -203,7 +203,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
                 }
             }
 
-            WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Type = existingObjective;
+            WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Type = existingObjective;
             L.Debug($"Set Objective Type to {existingObjective}");
             m_CoolantHSU.add_OnHSUExitSequence((Action<LG_HSUActivator_Core>)SyncOnHSUExitSequence);
 
@@ -216,7 +216,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             OnHSUExitSequence(0, 0);
         }
 
-        public static void OnHSUExitSequence(ulong x, byte y)
+        public static void OnHSUExitSequence(ulong x, int y)
         {
             Manager_CustomLevelBehavior.E1.m_CoolantHSU.SyncStatusChanged(ref Manager_CustomLevelBehavior.E1.pResetHSU, false);
             Manager_CustomLevelBehavior.E1.m_CoolantHSU.m_stateReplicator.SetStateUnsynced(Manager_CustomLevelBehavior.E1.pResetHSU);
@@ -228,7 +228,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
                 Manager_CustomLevelBehavior.E1.m_ReactorCoolTimer = Time.time + 20;
         }
 
-        public static void ClientRequestInfo(ulong x, byte y)
+        public static void ClientRequestInfo(ulong x, int y)
         {
             if (!SNet.IsMaster) return;
             NetworkAPI.InvokeEvent("E1ProvideObjectiveInfo", new pObjectiveData() {
@@ -295,7 +295,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
             m_CoolantHSU.m_insertHSUInteraction.SetActive(true);
 
             Material blob = null;
-            var allMat = GameObject.FindObjectsOfTypeAll(UnhollowerRuntimeLib.Il2CppType.From(typeof(Material))).Select((x) => x.Cast<Material>()).ToArray();
+            var allMat = GameObject.FindObjectsOfTypeAll(Il2CppType.From(typeof(Material))).Select((x) => x.Cast<Material>()).ToArray();
             foreach (var mat in allMat)
             {
                 if (!mat.name.Contains("BlobSurface")) continue;

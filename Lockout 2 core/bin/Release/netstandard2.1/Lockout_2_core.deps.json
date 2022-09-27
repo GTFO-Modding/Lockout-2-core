@@ -8,10 +8,14 @@
     ".NETStandard,Version=v2.1": {},
     ".NETStandard,Version=v2.1/": {
       "Lockout_2_core/1.0.0": {
+        "dependencies": {
+          "VersionInfoGenerator": "2.0.0"
+        },
         "runtime": {
           "Lockout_2_core.dll": {}
         }
-      }
+      },
+      "VersionInfoGenerator/2.0.0": {}
     }
   },
   "libraries": {
@@ -19,6 +23,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "VersionInfoGenerator/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jZhUxQhU2uPFSJCKF8j7T1f+kMcboaJyIAuovyhourkI6NhxY4nHdHgJ8yOhzQFdHOxVciQF0wKaFmC3eYaKNw==",
+      "path": "versioninfogenerator/2.0.0",
+      "hashPath": "versioninfogenerator.2.0.0.nupkg.sha512"
     }
   }
 }

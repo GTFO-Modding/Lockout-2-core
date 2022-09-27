@@ -1,10 +1,10 @@
 ﻿using AssetShards;
+using Il2CppInterop.Runtime.Attributes;
+using Il2CppInterop.Runtime.Injection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using UnhollowerBaseLib.Attributes;
-using UnhollowerRuntimeLib;
 using UnityEngine;
 
 namespace Lockout_2_core

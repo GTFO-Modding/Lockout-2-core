@@ -28,7 +28,7 @@ namespace Lockout_2_core
                 kindaScary[__instance.Pointer]?.Invoke();
 
                 L.Error("Getting active warden objective");
-                var objective = WardenObjectiveManager.ActiveWardenObjective(__instance.m_terminal.SpawnNode.LayerType);
+                var objective = WardenObjectiveManager.Current.m_activeWardenObjectives[__instance.m_terminal.SpawnNode.LayerType];
 
                 L.Error("Attempting to trigger events on activate");
                 WardenObjectiveManager.CheckAndExecuteEventsOnTrigger

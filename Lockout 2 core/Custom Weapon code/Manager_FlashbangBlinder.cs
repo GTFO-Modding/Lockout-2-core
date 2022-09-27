@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using Player;
-using UnhollowerBaseLib.Attributes;
 using UnityEngine.Rendering.PostProcessing;
+using Il2CppInterop.Runtime.Attributes;
 
 namespace Lockout_2_core.Custom_Weapon_code
 {

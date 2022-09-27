@@ -203,7 +203,7 @@ namespace Lockout_2_core.Custom_Tools
             new(new(102,0), new(5,30), BaseColor)
         };
 
-        public static Color BaseColor = new(0.48f, 0.49f, 0.48f, 1.0f);
-        public static Color BGColor = new(0.1f, 0.7f, 0.0f, 0.05f);
+        public static Color BaseColor = new(0.9f, 0.7f, 0.3f, 1.0f);
+        public static Color BGColor = new(0.3f, 0.1f, 0.5f, 0.05f);
     }
 }

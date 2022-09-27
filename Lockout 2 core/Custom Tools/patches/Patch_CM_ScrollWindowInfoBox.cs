@@ -15,8 +15,8 @@ namespace Lockout_2_core
 
         public static void SetInfoBox(CM_ScrollWindowInfoBox __instance, string subTitle, ref string description)
         {
-            if (subTitle != "Night Vision") return;
-            description = description + $"\n\nPress <color=green>{EntryPoint.NightVisionKey.Value}</color> to toggle Night Vision";
+            if (subTitle != "Thermal Vision") return;
+            description = $"Limited battery life\nGreatly improves visibility in dark areas\nDetect invisible enemies through heat signatures\n\nPress <color=yellow>{EntryPoint.NightVisionKey.Value}</color> to toggle Thermal Vision";
         }
     }
 }

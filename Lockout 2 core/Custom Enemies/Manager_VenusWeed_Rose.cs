@@ -32,6 +32,9 @@ namespace Lockout_2_core.Custom_Enemies
         public void SyncTryOpen()
         {
             if (m_StateTarget != roseAnimation.Shut || !m_Owner.Alive) return;
+            m_Owner.EnemyBalancingData.Health.DamageUntilHitreact = 1000;
+            m_Owner.EnemyBalancingData.Health.WeakspotDamageMulti = 3;
+
             m_Owner.Locomotion.ScoutScream.ActivateState(m_Owner.AI.Target);
 
             Open();
@@ -39,6 +42,8 @@ namespace Lockout_2_core.Custom_Enemies
         public void SyncTryClose()
         {
             if (m_StateTarget != roseAnimation.Open || !m_Owner.Alive) return;
+            m_Owner.EnemyBalancingData.Health.DamageUntilHitreact = float.MaxValue;
+            m_Owner.EnemyBalancingData.Health.WeakspotDamageMulti = 0.1f;
 
             Shut();
             CoroutineHandler.Add(OpenShell(20));
@@ -111,6 +116,7 @@ namespace Lockout_2_core.Custom_Enemies
             m_OwnerTentacles = m_Owner.transform.FindChild("siren.prefab/root/Hips/Spine/Chest/Neck/Head/Tentacles(Clone)").GetComponent<InstancedRenderFeature>();
             m_OwnerTentacles.gameObject.active = true;
             m_OwnerPosition = new(m_Owner.transform.position.x, 1.5f, m_Owner.transform.position.z);
+            m_Owner.EnemyBalancingData.Health.DamageUntilHitreact = float.MaxValue;
 
             transform.parent.parent = null;
 

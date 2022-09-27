@@ -22,7 +22,8 @@ namespace Lockout_2_core.Custom_Weapon_code
             m_sound = new CellSoundPlayer();
 
             FX_Manager.TryAllocateFXLight(out m_Light);
-            
+            if (m_Light == null) L.Error("Flashbang failed to allocate point light!");
+
             lifeTime = Time.time + 2f;
         }
 
@@ -50,12 +51,15 @@ namespace Lockout_2_core.Custom_Weapon_code
             }
             else
             {
-                m_Light.m_position = fx_position;
-                m_Light.SetColor((Vector4)(m_Light.m_linearColor - new Vector3(0f, 0f, 0.0000001f)));
-                m_Light.m_intensity = Math.Max(0, m_Light.m_intensity - 0.5f);
-                m_Light.UpdateData();
-                m_Light.UpdateTransform();
-                m_Light.enabled = false;
+                if (m_Light != null)
+                {
+                    m_Light.m_position = fx_position;
+                    m_Light.SetColor((Vector4)(m_Light.m_linearColor - new Vector3(0f, 0f, 0.0000001f)));
+                    m_Light.m_intensity = Math.Max(0, m_Light.m_intensity - 0.5f);
+                    m_Light.UpdateData();
+                    m_Light.UpdateTransform();
+                    m_Light.enabled = false;
+                }
 
                 if (Time.time < enemyStunTimer && Time.time > enemyStunTick)
                 {
@@ -92,10 +96,13 @@ namespace Lockout_2_core.Custom_Weapon_code
             Detonate();
 
             fx_position = transform.position;
-            m_Light.SetRange(70f);
-            m_Light.SetColor(Color.white);
-            m_Light.m_intensity = 10f;
-            m_Light.UpdateData();
+            if (m_Light != null)
+            {
+                m_Light.SetRange(70f);
+                m_Light.SetColor(Color.white);
+                m_Light.m_intensity = 10f;
+                m_Light.UpdateData();
+            }
 
             decayTime = Time.time + 10f;
             m_rigidbody.velocity = Vector3.zero;

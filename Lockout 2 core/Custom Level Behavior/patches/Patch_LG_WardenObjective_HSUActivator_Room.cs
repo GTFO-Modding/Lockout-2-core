@@ -18,11 +18,11 @@ namespace Lockout_2_core
         {
             if (RundownManager.ActiveExpedition.LevelLayoutData != 1001) return true;
 
-            var existingObjective = WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Type;
+            var existingObjective = WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Type;
 
-            WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Type = eWardenObjectiveType.ActivateSmallHSU;
+            WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Type = eWardenObjectiveType.ActivateSmallHSU;
             Manager_CustomLevelBehavior.B1.BuildCustomLevelContent();
-            WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer).Type = existingObjective;
+            WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer].Type = existingObjective;
 
             return false;
         }

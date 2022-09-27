@@ -4,12 +4,12 @@ using LevelGeneration;
 using SNetwork;
 using System;
 using System.Collections.Generic;
-using UnhollowerRuntimeLib;
 using UnityEngine;
 using System.Linq;
 using GameData;
 using Localization;
 using AIGraph;
+using Il2CppInterop.Runtime;
 
 namespace Lockout_2_core.Custom_Level_Behavior
 {
@@ -67,7 +67,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
         public void OnTerminalGathered(LG_ComputerTerminal terminal, AIG_CourseNode spawnNode)
         {
-            var objective = WardenObjectiveManager.ActiveWardenObjective(LG_LayerType.MainLayer);
+            var objective = WardenObjectiveManager.Current.m_activeWardenObjectives[LG_LayerType.MainLayer];
             L.Debug("Terminal was gathered, triggering events on activate");
             WardenObjectiveManager.CheckAndExecuteEventsOnTrigger(objective.EventsOnActivate, eWardenObjectiveEventTrigger.OnStart, true);
 

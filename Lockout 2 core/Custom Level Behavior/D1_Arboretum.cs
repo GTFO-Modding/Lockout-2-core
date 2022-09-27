@@ -4,7 +4,6 @@ using LevelGeneration;
 using SNetwork;
 using System;
 using System.Collections.Generic;
-using UnhollowerRuntimeLib;
 using UnityEngine;
 using System.Linq;
 using GameData;
@@ -12,6 +11,7 @@ using Localization;
 using AIGraph;
 using Lockout_2_core.Custom_Enemies;
 using Enemies;
+using Il2CppInterop.Runtime;
 
 namespace Lockout_2_core.Custom_Level_Behavior
 {
@@ -69,7 +69,7 @@ namespace Lockout_2_core.Custom_Level_Behavior
 
             genComp.m_terminalItemComp = terminalItemComp;
 
-            genComp.Setup();
+            genComp.Setup(0);
             L.Debug("Generator cluster setup!");
         }
 

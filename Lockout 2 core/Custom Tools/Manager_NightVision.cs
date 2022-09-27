@@ -5,7 +5,10 @@ using System;
 using UnityEngine;
 using UnityEngine.PostProcessing;
 using AK;
-using UnhollowerBaseLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Il2CppInterop.Runtime;
+using System.Linq;
+using GTFO.API;
 
 namespace Lockout_2_core.Custom_Tools
 {
@@ -13,165 +16,108 @@ namespace Lockout_2_core.Custom_Tools
     {
         public Manager_NightVision(IntPtr value) : base(value) { }
 
-        void Awake()
+        public void Awake()
         {
             Current = this;
             Patch_GS_AfterLevel.OnLevelCleanup += OnLevelCleanup;
+            Patch_WardenObjectiveManager.OnStartExpedition += Setup;
         }
 
-        void OnLevelCleanup()
+        public void OnLevelCleanup()
         {
-            L.Error("Cleaning up nightvision!");
-            NightVisionActive = false;
-            NightVisionEquipped = false;
-            LocalPlayerBackpack = null;
-            GearSpecialID = 0;
-            NightVisionBatteryTick = 0;
+            if (!m_IsSetup) return;
 
-            VFX_Default = null;
-            VFX_NVG = null;
+            L.Debug("Cleaning up nightvision");
 
-            try { Destroy(this); }
-            catch (Exception error) { L.Error($"Shit was garbage collected, wack {error.ToString()}"); }
+            GameObject.Destroy(m_ThermalVision_CameraQuad);
+            GameObject.Destroy(NightVisionBatteryUI.gameObject);
+
+            m_IsSetup = false;
+            NightVisionBatteryUI = null;
+            m_LocalPlayerBackpack = null;
+            m_NightVisionActive = false;
         }
 
-        void Update()
+        public void Update()
         {
-            if (!RundownManager.ExpeditionIsStarted)
+            if (Input.GetKeyDown(EntryPoint.NightVisionKey.Value)
+                && FocusStateManager.CurrentState == eFocusState.FPS
+                && LocalPlayerBackpack.AmmoStorage.ClassAmmo.AmmoInPack > 0
+                && HasNightVision) ToggleNightVision(!m_NightVisionActive);
+
+            if (m_NightVisionActive && m_AmmoTick < Time.time) 
             {
-                RemoveNightVision();
-                return;
-            }
-
-            if (RundownManager.ExpeditionIsStarted && LocalPlayerBackpack == null)
-            {
-                VFX_Default = new(
-                    pointlight: LocalPlayerAgent.m_ambientPoint,
-                    prelitVolumeColor: LocalPlayerAgent.FPSCamera.PrelitVolume.m_fogColor
-                );
-
-                VFX_NVG = new();
-                AssignNightVision(5002);
-            }
-            else if (NightVisionEquipped) NightVisionUpdate();
-        }
-
-
-        void NightVisionUpdate()
-        {
-            if (Input.GetKeyDown(EntryPoint.NightVisionKey.Value) && FocusStateManager.CurrentState == eFocusState.FPS)
-            {
-                if (NightVisionActive) DeactivateNightVision();
-                else if (LocalPlayerBackpack.AmmoStorage.ClassAmmo.AmmoInPack > 0) ActivateNightVision();
-            }
-
-            if (NightVisionActive && Time.time > NightVisionBatteryTick)
-            {
-                NightVisionBatteryTick = Time.time + 5f;
-                LocalPlayerBackpack.AmmoStorage.ClassAmmo.AddAmmo(-2 / LocalPlayerBackpack.AmmoStorage.ClassAmmo.CostOfBullet);
+                LocalPlayerBackpack.AmmoStorage.ClassAmmo.AddAmmo(-1);
                 LocalPlayerBackpack.AmmoStorage.UpdateAllAmmoUI();
-
                 NightVisionBatteryUI.UpdateSegments(LocalPlayerBackpack.AmmoStorage.ClassAmmo.AmmoInPack, LocalPlayerBackpack.AmmoStorage.ClassAmmo.AmmoMaxCap);
+                m_AmmoTick = Time.time + 5;
 
-                if (LocalPlayerBackpack.AmmoStorage.ClassAmmo.AmmoInPack <= 0)
-                {
-                    LocalPlayerBackpack.AmmoStorage.ClassAmmo.AmmoInPack = 0f;
-                    DeactivateNightVision();
-                }
+                if (LocalPlayerBackpack.AmmoStorage.ClassAmmo.AmmoInPack <= 0) ToggleNightVision(true);
             }
         }
 
-        void ActivateNightVision()
+        public void Setup()
         {
-            NightVisionActive = true;
-            LocalPlayerAgent.Sound.Post(EVENTS.IMPLANTSMALLMELEECHARGEUP);
-            AssignVFX(VFX_NVG);
-            NightVisionBatteryUI.SetActive(true);
+            L.Debug($"m_IsSetup: {m_IsSetup} | HasNightVision {HasNightVision}");
+
+            if (m_IsSetup || !HasNightVision) return;
+            m_IsSetup = true;
+
+            m_LocalPlayerBackpack.TryGetBackpackItem(InventorySlot.GearClass, out var nightVisionItem);
+            foreach (var renderer in nightVisionItem.Instance.gameObject.GetComponentsInChildren<Renderer>()) renderer.enabled = false;
+
+            NightVisionBatteryUI = new BatteryBar(5, GuiManager.Current.m_playerLayer.m_compass.transform);
+            LocalPlayer.Inventory.TryCast<PlayerInventoryLocal>().m_allowedScrollSlots.Remove(InventorySlot.GearClass);
         }
 
-        void DeactivateNightVision()
+        public void ToggleNightVision(bool status)
         {
-            NightVisionActive = false;
-            LocalPlayerAgent.Sound.Post(EVENTS.HUD_INFO_TEXT_DISAPPEAR);
-            AssignVFX(VFX_Default);
-            NightVisionBatteryUI.SetActive(false);
+            if (!m_IsSetup) Setup();
+            if (m_ThermalVision_CameraQuad == null) BuildThermalVFX();
+
+            m_ThermalVision_CameraQuad.active = status;
+            m_NightVisionActive = status;
+            NightVisionBatteryUI.SetActive(status);
+
+            if (status) LocalPlayer.Sound.Post(EVENTS.IMPLANTSMALLMELEECHARGEUP);
+            else LocalPlayer.Sound.Post(EVENTS.HUD_INFO_TEXT_DISAPPEAR);
         }
 
-        void AssignNightVision(uint pID)
+        
+
+        public void BuildThermalVFX()
         {
-            if (PlayerBackpackManager.TryGetBackpack(SNet.LocalPlayer, out LocalPlayerBackpack))
-            {
-                GearSpecialID = LocalPlayerBackpack.Slots[(int)InventorySlot.GearClass].Instance.ItemDataBlock.persistentID;
-                if (GearSpecialID != pID) return;
-
-                NightVisionEquipped = true;
-                NightVisionBatteryUI = new BatteryBar(5, GuiManager.Current.m_playerLayer.m_compass.transform);
-                LocalPlayerAgent.Inventory.TryCast<PlayerInventoryLocal>().m_allowedScrollSlots.Remove(InventorySlot.GearClass);
-            }
+            m_ThermalVision_CameraQuad = GameObject.Instantiate(AssetAPI.GetLoadedAsset("Assets/Lockout2/ThermalVisorQuad.prefab").TryCast<GameObject>(), m_FPSCamera.transform);
+            m_ThermalVision_CameraQuad.active = false;
         }
-
-        void RemoveNightVision()
-        {
-            if (LocalPlayerBackpack != null)
-            {
-                LocalPlayerBackpack = null;
-                NightVisionEquipped = false;
-            }
-        }
-
-        public void AssignVFX(VFX_Settings settings)
-        {
-            LocalPlayerAgent.m_ambientPoint.m_intensity = settings.m_Intensity;
-            LocalPlayerAgent.m_ambientPoint.m_lightScale = settings.m_LightScale;
-            LocalPlayerAgent.m_ambientPoint.m_invRangeSqr = settings.m_InverseScale;
-            LocalPlayerAgent.m_ambienceLight.color = settings.m_Color;
-            LocalPlayerAgent.m_ambientPoint.UpdateData();
-
-            LocalPlayerAgent.FPSCamera.PrelitVolume.m_fogColor = settings.PrelitVolumeColor;
-
-            //LocalPlayerAgent.FPSCamera.m_pBehavior.profile.grain.m_Settings = settings.Grain;
-        }
-
-        public PlayerAgent LocalPlayerAgent => PlayerManager.Current.m_localPlayerAgentInLevel;
-        public PlayerBackpack LocalPlayerBackpack;
-        public uint GearSpecialID;
-        public bool NightVisionEquipped;
-        public bool NightVisionActive;
-        public float NightVisionBatteryTick;
-        public BatteryBar NightVisionBatteryUI;
-        public Il2CppStructArray<Color> NightVisionBatteryTextCol = new Color[] { Color.green };
 
         public static Manager_NightVision Current;
 
-        public class VFX_Settings
-        {
-            public VFX_Settings() { }
-            public VFX_Settings(FX_PointLight pointlight, Color prelitVolumeColor)
+        public bool HasNightVision { get 
             {
-                m_Intensity = pointlight.m_intensity;
-                m_LightScale = pointlight.m_lightScale;
-                m_InverseScale = pointlight.m_invRangeSqr;
-                m_Color = new Color(pointlight.m_linearColor.x, pointlight.m_linearColor.y, pointlight.m_linearColor.z);
-
-                PrelitVolumeColor = prelitVolumeColor;
+                if (!PlayerBackpackManager.TryGetBackpack(SNet.LocalPlayer, out m_LocalPlayerBackpack)) return false;
+                return m_LocalPlayerBackpack.Slots[(int)InventorySlot.GearClass].Instance.ItemDataBlock.persistentID == 5002;
             }
-            public float m_Intensity = 0.35f;
-            public Vector3 m_LightScale = new(400, 400, 400);
-            public float m_InverseScale = 0.005f;
-            public Color m_Color = new(0.0331f, 1f, 0.01f);
-
-            public Color PrelitVolumeColor = new(0.2f, 1.01f, 0.1f, 1.0f);
-
-            public GrainModel.Settings Grain = new()
+        }
+        public PlayerBackpack LocalPlayerBackpack { get
             {
-                colored = false,
-                intensity = 1.5f,
-                luminanceContribution = 1.0f,
-                size = 0.75f
-            };
+                if (m_LocalPlayerBackpack != null) return m_LocalPlayerBackpack;
+
+                PlayerBackpackManager.TryGetBackpack(SNet.LocalPlayer, out m_LocalPlayerBackpack);
+                return m_LocalPlayerBackpack;
+            }
         }
 
-        public VFX_Settings VFX_Default;
-        public VFX_Settings VFX_NVG;
+        public PlayerAgent LocalPlayer { get => PlayerManager.GetLocalPlayerAgent(); }
+
+        public PlayerBackpack m_LocalPlayerBackpack;
+        public GameObject m_ThermalVision_CameraQuad;
+        public FPSCamera m_FPSCamera;
+        public float m_AmmoTick;
+        public bool m_NightVisionActive;
+        public bool m_IsSetup;
+
+        public BatteryBar NightVisionBatteryUI;
+        public Il2CppStructArray<Color> NightVisionBatteryTextCol = new Color[] { Color.yellow };
     }
 }

@@ -1,11 +1,37 @@
 {
   "version": 3,
   "targets": {
-    ".NETStandard,Version=v2.1": {}
+    ".NETStandard,Version=v2.1": {
+      "VersionInfoGenerator/2.0.0": {
+        "type": "package",
+        "build": {
+          "build/VersionInfoGenerator.targets": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "VersionInfoGenerator/2.0.0": {
+      "sha512": "jZhUxQhU2uPFSJCKF8j7T1f+kMcboaJyIAuovyhourkI6NhxY4nHdHgJ8yOhzQFdHOxVciQF0wKaFmC3eYaKNw==",
+      "type": "package",
+      "path": "versioninfogenerator/2.0.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "analyzers/netstandard2.0/VersionInfoGenerator.dll",
+        "build/VersionInfoGenerator.JsonTask.targets",
+        "build/VersionInfoGenerator.targets",
+        "tools/netstandard2.0/VersionInfoGenerator.JsonTask.dll",
+        "versioninfogenerator.2.0.0.nupkg.sha512",
+        "versioninfogenerator.nuspec"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETStandard,Version=v2.1": []
+    ".NETStandard,Version=v2.1": [
+      "VersionInfoGenerator >= 2.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Admin-PC\\.nuget\\packages\\": {}
@@ -45,6 +71,13 @@
     "frameworks": {
       "netstandard2.1": {
         "targetAlias": "netstandard2.1",
+        "dependencies": {
+          "VersionInfoGenerator": {
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[2.0.0, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
@@ -60,7 +93,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -95,10 +95,6 @@ namespace Lockout_2_core
 
             //Coroutines (deprecate this shit eventually)
             CoroutineHandler.Init();
-
-
-
-            L.Debug("This rundown is dedicated to Dex. Hey there buddy, wherever you are, thanks for everything. Through good times and bad times you were always willing to lend me a hand, even when I was a hardass you would always work through my bullshit and help me get things done. I couldn't have done any of this without you. I'm gonna miss you, man. Wish you were here.");
         }
 
         private void AssetAPI_OnStartupAssetsLoaded()
